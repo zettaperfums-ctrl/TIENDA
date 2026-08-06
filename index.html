@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZETTA PERFUM'S</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--primary:#00f2fe;--secondary:#ff007f;--bg-dark:#0a0a0c;--card-bg:#141418;--text-light:#f5f5f7;--text-muted:#a1a1a6;--border-color:#26262e;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background-color:var(--bg-dark);color:var(--text-light);padding-bottom:90px;}
+header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-color);z-index:100;padding:0.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{height:46px;width:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#16161c;border:1px solid var(--primary);box-shadow:0 0 10px rgba(0,242,254,0.3);}
+.brand-icon img{width:100%;height:100%;object-fit:cover;display:block;}
+.brand-name{font-size:1.2rem;font-weight:700;letter-spacing:1.5px;background:linear-gradient(45deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cart-btn{position:relative;background:transparent;border:1px solid var(--primary);color:var(--primary);padding:6px 14px;border-radius:20px;cursor:pointer;font-weight:600;}
+.cart-badge{position:absolute;top:-8px;right:-8px;background:var(--secondary);color:#fff;font-size:0.75rem;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+.hero-banner{width:100%;background:radial-gradient(circle,rgba(20,20,30,1)0%,rgba(10,10,12,1)100%);padding:2.5rem 1rem 2rem 1rem;text-align:center;border-bottom:1px solid var(--border-color);display:flex;flex-direction:column;align-items:center;}
+.hero-title{font-size:1.8rem;font-weight:700;margin-bottom:0.2rem;}
+.hero-subtitle{color:var(--text-muted);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;}
+.categories-bar{display:flex;justify-content:center;gap:10px;padding:1.5rem 1rem 1rem 1rem;flex-wrap:wrap;}
+.cat-btn{background:var(--card-bg);border:1px solid var(--border-color);color:var(--text-muted);padding:8px 18px;border-radius:20px;cursor:pointer;font-size:0.85rem;}
+.cat-btn.active{background:linear-gradient(45deg,var(--primary),var(--secondary));color:#fff;border-color:transparent;font-weight:600;}
+.catalog-container{max-width:1200px;margin:0 auto;padding:1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem;}
+.product-card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+.product-img-placeholder{width:100%;height:180px;background:#16161c;display:flex;align-items:center;justify-content:center;font-size:3.5rem;}
+.product-info{padding:1rem;display:flex;flex-direction:column;flex-grow:1;}
+.product-category{font-size:0.7rem;color:var(--primary);text-transform:uppercase;margin-bottom:4px;}
+.product-title{font-size:1rem;font-weight:600;margin-bottom:6px;}
+.product-desc{font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;flex-grow:1;}
+.product-price{font-size:1.2rem;font-weight:700;color:var(--text-light);margin-bottom:10px;}
+.add-to-cart-btn{width:100%;background:linear-gradient(45deg,var(--primary),#00b4db);color:#000;border:none;padding:10px;border-radius:6px;font-weight:700;cursor:pointer;}
+.cart-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;justify-content:flex-end;z-index:1000;}
+.cart-overlay.open{display:flex;}
+.cart-modal{width:100%;max-width:400px;background:var(--bg-dark);height:100%;display:flex;flex-direction:column;padding:1.2rem;border-left:1px solid var(--border-color);}
+.cart-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-color);padding-bottom:0.8rem;}
+.close-cart{background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;}
+.cart-items{flex-grow:1;overflow-y:auto;margin:1rem 0;display:flex;flex-direction:column;gap:0.8rem;}
+.cart-item{display:flex;align-items:center;gap:10px;background:var(--card-bg);padding:8px;border-radius:8px;}
+.cart-item-icon{font-size:1.5rem;width:45px;height:45px;background:#1e1e24;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+.cart-item-details{flex-grow:1;}
+.cart-item-title{font-size:0.85rem;font-weight:600;}
+.cart-item-price{font-size:0.8rem;color:var(--primary);}
+.qty-controls{display:flex;align-items:center;gap:6px;margin-top:4px;}
+.qty-btn{background:var(--border-color);color:#fff;border:none;width:20px;height:20px;border-radius:4px;cursor:pointer;}
+.delete-item{color:#e74c3c;background:none;border:none;cursor:pointer;}
+.cart-total{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:700;margin-bottom:1rem;}
+.checkout-form{display:flex;flex-direction:column;gap:8px;margin-bottom:0.8rem;}
+.checkout-form input{background:var(--card-bg);border:1px solid var(--border-color);padding:10px;border-radius:6px;color:#fff;}
+.send-whatsapp-btn{width:100%;background:#25d366;color:#fff;border:none;padding:12px;border-radius:6px;font-size:0.95rem;font-weight:700;cursor:pointer;}
+.recommendations-btn{position:fixed;bottom:20px;right:15px;background:linear-gradient(45deg,var(--secondary),var(--primary));color:#fff;border:none;padding:10px 16px;border-radius:30px;font-weight:700;cursor:pointer;z-index:999;display:flex;align-items:center;gap:6px;font-size:0.85rem;box-shadow:0 4px 20px rgba(255,0,127,0.5);}
+.chat-window{position:fixed;bottom:80px;right:20px;width:350px;max-width:90vw;height:480px;background:var(--bg-dark);border:1.5px solid var(--primary);border-radius:16px;display:none;flex-direction:column;z-index:1000;box-shadow:0 10px 30px rgba(0,0,0,0.8);}
+.chat-window.active{display:flex;}
+.chat-body{flex-grow:1;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;font-size:0.82rem;}
+.msg{max-width:90%;padding:10px 14px;border-radius:12px;line-height:1.4;}
+.msg-bot{background:var(--card-bg);color:#fff;align-self:flex-start;border:1px solid var(--border-color);}
+.msg-user{background:var(--primary);color:#000;font-weight:600;align-self:flex-end;}
+.chat-product-suggestion{background:#1e1e26;border:1px solid var(--primary);border-radius:8px;padding:8px;margin-top:6px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.chat-product-suggestion button{background:var(--primary);color:#000;border:none;padding:5px 10px;border-radius:4px;font-weight:bold;cursor:pointer;font-size:0.75rem;white-space:nowrap;}
+.chat-footer-box{padding:8px;background:var(--card-bg);display:flex;gap:6px;border-top:1px solid var(--border-color);}
+.chat-input{flex-grow:1;background:var(--bg-dark);border:1px solid var(--border-color);padding:8px 12px;border-radius:16px;color:#fff;outline:none;}
+.chat-send-btn{background:var(--primary);border:none;padding:0 14px;border-radius:16px;cursor:pointer;font-weight:bold;color:#000;}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">
+  <div class="brand-icon">
+    <!-- Logo incrustado en Base64 -->
+    <img src="data:image/jpeg;base64,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" alt="Logo ZETTA">
+  </div>
+<span class="brand-name">ZETTA PERFUM'S</span>
+</div>
+<button class="cart-btn" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i> Carrito <span class="cart-badge" id="cart-count">0</span></button>
+</header>
+
+<section class="hero-banner">
+<h1 class="hero-title">ZETTA Perfum's</h1>
+<p class="hero-subtitle">L'ESSENCE DE L'INVISIBLE</p>
+</section>
+
+<nav class="categories-bar" id="category-bar"></nav>
+<main class="catalog-container" id="product-grid">
+  <!-- El catálogo cargará instantáneamente aquí -->
+</main>
+
+<div class="cart-overlay" id="cart-modal">
+<div class="cart-modal">
+<div class="cart-header"><h3>Tu Carrito</h3><button class="close-cart" onclick="toggleCart()">&times;</button></div>
+<div class="cart-items" id="cart-items-container"></div>
+<div class="cart-footer">
+<div class="cart-total"><span>Total:</span><span id="cart-total-price">$0</span></div>
+<form class="checkout-form" onclick="event.preventDefault()" onsubmit="sendOrderToWhatsApp(event)">
+<input type="text" id="cust-name" placeholder="Tu Nombre" required>
+<input type="text" id="cust-address" placeholder="Dirección / Ciudad" required>
+<button type="submit" class="send-whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> Pedir por WhatsApp</button>
+</form>
+</div>
+</div>
+</div>
+
+<button class="recommendations-btn" id="toggle-chat-btn">
+  <i class="fa-solid fa-wand-magic-sparkles"></i> 
+  <i class="fa-solid fa-bag-shopping"></i> Asesor ZETTA
+</button>
+
+<div class="chat-window" id="chat-window">
+<div class="chat-header" style="padding:12px;background:var(--card-bg);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-color);">
+  <span style="font-weight:600;color:var(--primary);"><i class="fa-solid fa-wand-magic-sparkles"></i> Asesor IA ZETTA</span>
+  <button class="close-cart" id="close-chat-btn">&times;</button>
+</div>
+<div class="chat-body" id="chat-body">
+  <div class="msg msg-bot">¡Hola! Qué gusto saludarte en ZETTA 🤝✨<br>Soy tu asesor personal. ¿Qué estás buscando hoy? Tenemos perfumes, accesorios y mucho más para complementar tu estilo.</div>
+</div>
+<div class="chat-footer-box">
+<input type="text" class="chat-input" id="chat-input" placeholder="Escribe tu consulta...">
+<button class="chat-send-btn" id="send-chat-btn"><i class="fa-solid fa-paper-plane"></i></button>
+</div>
+</div>
+
+<script>
+const STORE_CONFIG = { name: "ZETTA PERFUM'S", whatsappNumber: "573052953417", currencySymbol: "$" };
+
+let products = [
+  {id: 1, title: "Club De Nuit Intense", category: "Perfume", price: 90000, desc: "Armaf 100ml - Alta fijación", icon: "💙"},
+  {id: 2, title: "Khamrah Lattafa", category: "Perfume Árabe", price: 150000, desc: "Notas de dulce, vainilla y especias", icon: "❤️"},
+  {id: 3, title: "Asad Lattafa", category: "Perfume Árabe", price: 135000, desc: "Elegante y especiado tipo Dior Sauvage Elixir", icon: "🖤"},
+  {id: 4, title: "Gorra Zetta Street", category: "Accesorios", price: 60000, desc: "Estilo urbano ajustable premium", icon: "🧢"}
+];
+
+let categories = ["Todos", ...new Set(products.map(p => p.category))];
+let cart = [];
+let currentCategory = "Todos";
+
+function formatMoney(a){ return STORE_CONFIG.currencySymbol + Number(a).toLocaleString('es-CO'); }
+
+function renderCategories(){
+  document.getElementById("category-bar").innerHTML = categories.map(c => 
+    `<button class="cat-btn ${c===currentCategory?'active':''}" onclick="filterCategory('${c}')">${c}</button>`
+  ).join('');
+}
+
+function filterCategory(c){
+  currentCategory = c;
+  renderCategories();
+  renderProducts();
+}
+
+function renderProducts(){
+  const f = currentCategory === "Todos" ? products : products.filter(p => p.category === currentCategory);
+  document.getElementById("product-grid").innerHTML = f.map(p => `
+    <div class="product-card">
+      <div class="product-img-placeholder">${p.icon}</div>
+      <div class="product-info">
+        <span class="product-category">${p.category}</span>
+        <h3 class="product-title">${p.title}</h3>
+        <p class="product-desc">${p.desc}</p>
+        <div class="product-price">${formatMoney(p.price)}</div>
+        <button class="add-to-cart-btn" onclick="addToCart(${p.id})">Agregar</button>
+      </div>
+    </div>`).join('');
+}
+
+function addToCart(id){
+  const ex = cart.find(i => i.id === id);
+  if(ex){ ex.quantity += 1; } 
+  else { const pr = products.find(p => p.id === id); cart.push({...pr, quantity: 1}); }
+  updateCartUI();
+}
+
+function changeQty(id, d){
+  const it = cart.find(i => i.id === id);
+  if(it){ it.quantity += d; if(it.quantity <= 0){ cart = cart.filter(i => i.id !== id); } }
+  updateCartUI();
+}
+
+function removeItem(id){ cart = cart.filter(i => i.id !== id); updateCartUI(); }
+
+function updateCartUI(){
+  const tc = cart.reduce((s, i) => s + i.quantity, 0);
+  const tp = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+  document.getElementById("cart-count").innerText = tc;
+  document.getElementById("cart-total-price").innerText = formatMoney(tp);
+  const cont = document.getElementById("cart-items-container");
+  if(cart.length === 0){
+    cont.innerHTML = `<p style="text-align:center;color:var(--text-muted);margin-top:20px;">Tu carrito está vacío</p>`;
+  } else {
+    cont.innerHTML = cart.map(i => `
+      <div class="cart-item">
+        <div class="cart-item-icon">${i.icon}</div>
+        <div class="cart-item-details">
+          <div class="cart-item-title">${i.title}</div>
+          <div class="cart-item-price">${formatMoney(i.price)}</div>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty(${i.id},-1)">-</button>
+            <span>${i.quantity}</span>
+            <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button>
+          </div>
+        </div>
+        <button class="delete-item" onclick="removeItem(${i.id})"><i class="fa-solid fa-trash"></i></button>
+      </div>`).join('');
+  }
+}
+
+function toggleCart(){ document.getElementById("cart-modal").classList.toggle("open"); }
+
+function sendOrderToWhatsApp(e){
+  e.preventDefault();
+  if(cart.length === 0){ alert("Agrega un producto."); return; }
+  const n = document.getElementById("cust-name").value;
+  const ad = document.getElementById("cust-address").value;
+  const tp = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+  let t = `*PEDIDO ZETTA*\nCliente: ${n}\nDirección: ${ad}\n\n`;
+  cart.forEach((i, x) => { t += `${x+1}. ${i.title} x${i.quantity} - ${formatMoney(i.price * i.quantity)}\n`; });
+  t += `\nTotal: ${formatMoney(tp)}`;
+  window.open(`https://wa.me/${STORE_CONFIG.whatsappNumber}?text=` + encodeURIComponent(t), '_blank');
+}
+
+const cw = document.getElementById("chat-window");
+document.getElementById("toggle-chat-btn").onclick = () => cw.classList.toggle("active");
+document.getElementById("close-chat-btn").onclick = () => cw.classList.remove("active");
+
+async function askGeminiAI(userMessage) {
+  const query = userMessage.toLowerCase().trim();
+  await new Promise(resolve => setTimeout(resolve, 300));
+  let matchedProducts = [];
+  let replyText = "";
+
+  if (["hola", "buenas", "ola", "buenos dias", "buenas tardes", "hey", "hi"].includes(query)) {
+    return {
+      text: "¡Hola! Qué gusto saludarte en ZETTA 🤝✨ Estoy aquí para ayudarte a encontrar exactamente lo que necesitas. ¿Buscas algún perfume o accesorio?",
+      products: []
+    };
+  }
+
+  const keywords = query.split(" ").filter(w => w.length > 2);
+  matchedProducts = products.filter(p => {
+    const textToSearch = `${p.title} ${p.category} ${p.desc}`.toLowerCase();
+    return keywords.some(keyword => textToSearch.includes(keyword));
+  });
+
+  if (matchedProducts.length > 0) {
+    matchedProducts = matchedProducts.slice(0, 3);
+    replyText = `¡Excelente elección! Analizando lo que buscas, creo que estas opciones encajan perfectamente contigo:`;
+  } else {
+    matchedProducts = [...products].sort(() => 0.5 - Math.random()).slice(0, 3);
+    replyText = `Para eso que necesitas, te sugiero echarle un vistazo a estas alternativas de nuestro catálogo:`;
+  }
+
+  return { text: replyText, products: matchedProducts };
+}
+
+const sendMsg = async () => {
+  const inp = document.getElementById("chat-input");
+  const val = inp.value.trim();
+  if(!val) return;
+  const body = document.getElementById("chat-body");
+  
+  body.innerHTML += `<div class="msg msg-user">${val}</div>`;
+  inp.value = "";
+  body.scrollTop = body.scrollHeight;
+
+  const loadingId = "loading-" + Date.now();
+  body.innerHTML += `<div class="msg msg-bot" id="${loadingId}">Buscando opciones ideales... ✨</div>`;
+  body.scrollTop = body.scrollHeight;
+
+  const aiResponse = await askGeminiAI(val);
+  const loadingElement = document.getElementById(loadingId);
+  if(loadingElement) loadingElement.remove();
+
+  let htmlResponse = `<div class="msg msg-bot">${aiResponse.text}`;
+  if(aiResponse.products && aiResponse.products.length > 0){
+    aiResponse.products.forEach(prod => {
+      htmlResponse += `
+        <div class="chat-product-suggestion">
+          <div>
+            <strong style="font-size:0.85rem;display:block;">${prod.icon} ${prod.title}</strong>
+            <span style="color:var(--primary);font-weight:600;">${formatMoney(prod.price)}</span>
+          </div>
+          <button onclick="addToCart(${prod.id}); alert('¡${prod.title} agregado al carrito!');">Agregar</button>
+        </div>`;
+    });
+  }
+  htmlResponse += `</div>`;
+  body.innerHTML += htmlResponse;
+  body.scrollTop = body.scrollHeight;
+};
+
+document.getElementById("send-chat-btn").onclick = sendMsg;
+document.getElementById("chat-input").onkeypress = (e) => { if
