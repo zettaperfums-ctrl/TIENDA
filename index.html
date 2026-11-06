@@ -85,7 +85,29 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
 }
 
 .product-info{padding:1rem;display:flex;flex-direction:column;flex-grow:1;}
-.product-category{font-size:0.7rem;color:var(--primary);text-transform:uppercase;margin-bottom:4px;font-weight:700;}
+
+.product-meta-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.product-category{font-size:0.7rem;color:var(--primary);text-transform:uppercase;font-weight:700;}
+
+/* Estilo neón dinámico para el género (igual que la categoría) */
+.product-gender {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: linear-gradient(270deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% 200%;
+  animation: neonFlow 4s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+
 .product-title{font-size:1rem;font-weight:600;margin-bottom:6px;}
 .product-desc{font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;flex-grow:1;}
 .product-price{font-size:1.2rem;font-weight:700;color:var(--text-light);margin-bottom:12px;background:linear-gradient(45deg,#fff,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
@@ -190,16 +212,16 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
   <button class="close-cart" id="close-chat-btn">&times;</button>
 </div>
 <div class="chat-body" id="chat-body">
-  <div class="msg msg-bot">¡Hola! Qué gusto saludarte en ZETTA 🤝✨ Soy tu asesor experto en perfumería. Cuéntame, ¿qué tipo de fragancia buscas, para hombre o mujer, y para qué ocasión? ¡Te ayudaré a elegir la ideal!</div>
+  <div class="msg msg-bot">¡Hola! Qué gusto saludarte en ZETTA 🤝✨ Soy tu asesor experto en perfumería. Cuéntame, ¿buscas algo para hombre, mujer o unisex? ¡Te ayudaré a elegir la ideal!</div>
 </div>
 <div class="chat-footer-box">
-<input type="text" class="chat-input" id="chat-input" placeholder="Ej: Busco un perfume dulce de mujer...">
+<input type="text" class="chat-input" id="chat-input" placeholder="Ej: Busco un perfume de hombre...">
 <button class="chat-send-btn" id="send-chat-btn"><i class="fa-solid fa-paper-plane"></i></button>
 </div>
 </div>
 
 <script>
-const STORE_CONFIG = { name: "ZETTA PERFUM'S", whatsappNumber: "573052953417", currencySymbol: "$" };
+  const STORE_CONFIG = { name: "ZETTA PERFUM'S", whatsappNumber: "573052953417", currencySymbol: "$" };
 const CATALOG_URL = "https://script.google.com/macros/s/AKfycbzqoGiONu3DTfMzvfJQbpBzbXI9iIBwMYSMsPCrnpbnp8UtRH5k2VTxGxCFySUEfS8/exec"; 
 
 let products = [
@@ -209,6 +231,7 @@ let products = [
     category: "perfumes arabes", 
     price: 130000, 
     desc: "Fresas y notas dulces exclusivas", 
+    gender: "mujer",
     icon: "✨", 
     image: "https://i.postimg.cc/BQ1mpNLY/IMG-20261016-WA0069.jpg"
   }
@@ -233,10 +256,11 @@ async function tryFetchCatalog() {
     if (data && data.length > 0) {
       products = data.map((item, index) => ({
         id: index + 1, 
-        title: item.title || item.titulo || "Perfume Zetta", 
-        category: item.category ? item.category.trim().toLowerCase() : "perfumes arabes",
-        price: Number(item.price || item.precio) || 100000, 
+        title: item.title || item.titulo || item.nombre || "Perfume Zetta", 
+        category: item.category ? item.category.trim().toLowerCase() : "clasicos",
+        price: Number(item.price || item.precio) || 90000, 
         desc: item.desc || item.descripcion || "Fragancia exclusiva de alta duración", 
+        gender: (item.gender || item.genero || "unisex").trim().toLowerCase(),
         icon: "✨", 
         image: item.image || item.Img || item.imagen || ""
       }));
@@ -259,7 +283,10 @@ function renderProducts(){
     <div class="product-card" id="prod-${p.id}">
       <div class="product-img-container">${p.image ? `<img src="${p.image.trim()}" alt="${p.title}">` : `<span style="font-size:3.5rem;">${p.icon}</span>`}</div>
       <div class="product-info">
-        <span class="product-category">${p.category}</span>
+        <div class="product-meta-top">
+          <span class="product-category">${p.category}</span>
+          ${p.gender ? `<span class="product-gender">${p.gender}</span>` : ''}
+        </div>
         <h3 class="product-title">${p.title}</h3>
         <p class="product-desc">${p.desc}</p>
         <div class="product-price">${formatMoney(p.price)}</div>
@@ -327,7 +354,7 @@ function processAIChat() {
   chatBody.scrollTop = chatBody.scrollHeight;
 
   const typingId = "typing-" + Date.now();
-  chatBody.innerHTML += `<div class="msg msg-bot" id="${typingId}">Buscando la fragancia perfecta en ZETTA... ✨</div>`;
+  chatBody.innerHTML += `<div class="msg msg-bot" id="${typingId}">Analizando perfil y género de fragancias... ✨</div>`;
   chatBody.scrollTop = chatBody.scrollHeight;
 
   setTimeout(() => {
@@ -335,36 +362,44 @@ function processAIChat() {
     if(typingElement) typingElement.remove();
 
     const query = text.toLowerCase();
-    
-    // Motor inteligente adaptativo según lo que escriba el cliente
-    let botReply = "";
-    let matchedProducts = [];
+    const isMan = query.includes("hombre") || query.includes("caballero") || query.includes("masculino");
+    const isWoman = query.includes("mujer") || query.includes("dama") || query.includes("femenina");
+    const isUnisex = query.includes("unisex");
 
-    if (query.includes("noche") || query.includes("elegante") || query.includes("fiesta") || query.includes("hombre") || query.includes("caballero") || query.includes("lacoste")) {
-      botReply = `¡Excelente elección para la noche o estilo elegante! Las notas amaderadas y profundas son perfectas. Te recomiendo estas opciones de nuestro catálogo:`;
-      matchedProducts = products.filter(p => p.title.toLowerCase().includes("lacoste") || p.title.toLowerCase().includes("desert") || p.desc.toLowerCase().includes("amaderado"));
-    } else if (query.includes("mujer") || query.includes("dama") || query.includes("dulce") || query.includes("fresa") || query.includes("yum")) {
-      botReply = `¡Maravillosa elección! Las fragancias dulces y femeninas dejan una huella inolvidable. Estas son ideales para ti:`;
-      matchedProducts = products.filter(p => p.category.toLowerCase().includes("arabe") || p.title.toLowerCase().includes("yum") || p.desc.toLowerCase().includes("fresa"));
+    let scoredProducts = products.map(prod => {
+      let score = 0;
+      const g = (prod.gender || "").toLowerCase();
+      const searchableText = `${prod.title} ${prod.desc} ${prod.category} ${g}`.toLowerCase();
+
+      if (isMan && g.includes("hombre")) score += 20;
+      if (isWoman && g.includes("mujer")) score += 20;
+      if (isUnisex && g.includes("unisex")) score += 20;
+      if (searchableText.includes(query)) score += 5;
+
+      return { product: prod, score: score };
+    });
+
+    scoredProducts.sort((a, b) => b.score - a.score);
+
+    let bestMatches = scoredProducts.filter(item => item.score > 0).map(item => item.product);
+    if (bestMatches.length === 0) {
+      bestMatches = products.slice(0, 3);
     } else {
-      botReply = `¡Entendido! Analizando tus gustos para "${text}", creo que estas fragancias exclusivas te van a encantar:`;
-      // Seleccionar un par de productos variados
-      matchedProducts = products.slice(0, 2);
+      bestMatches = bestMatches.slice(0, 3);
     }
 
-    if (matchedProducts.length === 0) {
-      matchedProducts = products.slice(0, 2);
-    }
-
+    let botReply = `¡Excelente elección! Buscando opciones para "${text}", estas son las fragancias ideales que tenemos disponibles:`;
+    
     let cardsHtml = "";
-    matchedProducts.forEach(prod => {
+    bestMatches.forEach(prod => {
       let thumb = prod.image ? `<img src="${prod.image.trim()}" alt="${prod.title}">` : `<div class="cp-icon">${prod.icon}</div>`;
       cardsHtml += `
         <div class="chat-product-card">
           ${thumb}
           <div class="chat-product-info">
-            <h4>${prod.title}</h4>
+            <h4>${prod.title} <span style="font-size:0.65rem; background:linear-gradient(270deg,var(--primary),var(--secondary)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:bold;">(${prod.gender || 'unisex'})</span></h4>
             <p>${formatMoney(prod.price)}</p>
+            <span style="font-size:0.68rem; color:var(--text-muted); display:block; margin-top:2px;">${prod.desc}</span>
           </div>
           <div class="chat-card-actions">
             <button class="btn-chat-view" onclick="viewProductInCatalog(${prod.id})">Ver</button>
@@ -375,7 +410,7 @@ function processAIChat() {
 
     chatBody.innerHTML += `<div class="msg msg-bot">${botReply}${cardsHtml}</div>`;
     chatBody.scrollTop = chatBody.scrollHeight;
-  }, 500);
+  }, 400);
 }
 
 document.getElementById("send-chat-btn").onclick = processAIChat;
