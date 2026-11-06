@@ -190,7 +190,7 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
   <button class="close-cart" id="close-chat-btn">&times;</button>
 </div>
 <div class="chat-body" id="chat-body">
-  <div class="msg msg-bot">¡Hola! Qué gusto saludarte en ZETTA 🤝✨ Soy tu asesor experto en perfumería con IA. Cuéntame, ¿qué tipo de fragancia buscas, para hombre o mujer, y para qué ocasión? ¡Te ayudaré a elegir la ideal!</div>
+  <div class="msg msg-bot">¡Hola! Qué gusto saludarte en ZETTA 🤝✨ Soy tu asesor experto en perfumería. Cuéntame, ¿qué tipo de fragancia buscas, para hombre o mujer, y para qué ocasión? ¡Te ayudaré a elegir la ideal!</div>
 </div>
 <div class="chat-footer-box">
 <input type="text" class="chat-input" id="chat-input" placeholder="Ej: Busco un perfume dulce de mujer...">
@@ -247,7 +247,7 @@ async function tryFetchCatalog() {
       renderProducts();
     }
   } catch (e) {
-    console.log("Usando catálogo local por seguridad móvil.");
+    console.log("Usando catálogo local.");
   }
 }
 
@@ -329,19 +329,21 @@ async function processAIChat() {
   chatBody.scrollTop = chatBody.scrollHeight;
 
   const typingId = "typing-" + Date.now();
-  chatBody.innerHTML += `<div class="msg msg-bot" id="${typingId}">Tu asesor ZETTA está escribiendo... ✨</div>`;
+  chatBody.innerHTML += `<div class="msg msg-bot" id="${typingId}">Asesor ZETTA analizando notas... ✨</div>`;
   chatBody.scrollTop = chatBody.scrollHeight;
 
-  chatHistory.push({ role: "user", content: text });
+  let botReply = "";
+  let recommendedIds = [];
 
   try {
     const catalogContext = JSON.stringify(products.map(p => ({ id: p.id, title: p.title, category: p.category, price: p.price, desc: p.desc })));
     
-    const systemInstruction = `Eres el asesor virtual experto, carismático, elegante y amigable de la tienda de perfumes ZETTA PERFUM'S. 
-    Tienes acceso al siguiente catálogo de productos en formato JSON: ${catalogContext}.
-    Tu trabajo es conversar de forma natural y fluida con el cliente (como un vendedor profesional en persona). 
-    1. Responde a su pregunta, dale consejos sobre notas olfativas, ocasiones de uso o duración.
-    2. Si el cliente muestra interés en algún tipo de perfume, recomiéndale entre 1 y 3 opciones exactas de nuestro catálogo mencionando sus nombres exactos.`;
+    const systemInstruction = `Eres el asesor virtual experto y amigable de la tienda ZETTA PERFUM'S. 
+    Tienes acceso al catálogo: ${catalogContext}.
+    Conversa de forma natural y fluida con el cliente sobre sus gustos, notas o la ocasión que busca.
+    Recomiéndale entre 1 y 3 perfumes exactos de la lista y menciona sus nombres en la respuesta.`;
+
+    chatHistory.push({ role: "user", content: text });
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -356,58 +358,74 @@ async function processAIChat() {
           ...chatHistory
         ],
         temperature: 0.7,
-        max_tokens: 450
+        max_tokens: 350
       })
     });
 
     const data = await response.json();
-    const typingElement = document.getElementById(typingId);
-    if(typingElement) typingElement.remove();
-
     if(data.choices && data.choices.length > 0) {
-      let botReply = data.choices[0].message.content;
+      botReply = data.choices[0].message.content;
       chatHistory.push({ role: "assistant", content: botReply });
-
-      let recommendedIds = [];
-      products.forEach(p => {
-        if (botReply.toUpperCase().includes(p.title.toUpperCase())) {
-          recommendedIds.push(p.id);
-        }
-      });
-
-      recommendedIds = [...new Set(recommendedIds)].slice(0, 3);
-
-      let cardsHtml = "";
-      recommendedIds.forEach(id => {
-        const prod = products.find(p => p.id === id);
-        if (prod) {
-          let thumb = prod.image ? `<img src="${prod.image.trim()}" alt="${prod.title}">` : `<div class="cp-icon">${prod.icon}</div>`;
-          cardsHtml += `
-            <div class="chat-product-card">
-              ${thumb}
-              <div class="chat-product-info">
-                <h4>${prod.title}</h4>
-                <p>${formatMoney(prod.price)}</p>
-              </div>
-              <div class="chat-card-actions">
-                <button class="btn-chat-view" onclick="viewProductInCatalog(${prod.id})">Ver</button>
-                <button class="btn-chat-add" onclick="addToCart(${prod.id})">Agregar</button>
-              </div>
-            </div>`;
-        }
-      });
-
-      chatBody.innerHTML += `<div class="msg msg-bot">${botReply}${cardsHtml}</div>`;
-      chatBody.scrollTop = chatBody.scrollHeight;
     } else {
-      throw new Error("Error en la respuesta");
+      throw new Error();
     }
-  } catch (error) {
-    const typingElement = document.getElementById(typingId);
-    if(typingElement) typingElement.remove();
-    chatBody.innerHTML += `<div class="msg msg-bot">¡Hola! En este momento estoy analizando tus gustos, ¿qué tipo de fragancia te llama la atención hoy? ✨</div>`;
-    chatBody.scrollTop = chatBody.scrollHeight;
+  } catch (err) {
+    // SISTEMA DE RESPALDO LOCAL INTELIGENTE (Garantiza respuesta fluida y natural siempre)
+    const query = text.toLowerCase();
+    const isMan = query.includes("hombre") || query.includes("caballero") || query.includes("masculino") || query.includes("noche");
+    const isWoman = query.includes("mujer") || query.includes("dama") || query.includes("femenina") || query.includes("dulce");
+
+    botReply = `¡Excelente elección! Para lo que buscas ("${text}"), te recomiendo estas opciones ideales de nuestra colección exclusiva:`;
+    
+    let scored = products.map(p => {
+      let score = 1;
+      const content = `${p.title} ${p.desc} ${p.category}`.toLowerCase();
+      if (isMan && (content.includes("hombre") || content.includes("desert") || content.includes("lacoste"))) score += 5;
+      if (isWoman && (content.includes("mujer") || content.includes("yum") || content.includes("fresa"))) score += 5;
+      return { product: p, score };
+    });
+    scored.sort((a,b) => b.score - a.score);
+    recommendedIds = scored.slice(0, 2).map(s => s.product.id);
   }
+
+  const typingElement = document.getElementById(typingId);
+  if(typingElement) typingElement.remove();
+
+  // Detectar productos mencionados por la IA o usar respaldo
+  if (recommendedIds.length === 0) {
+    products.forEach(p => {
+      if (botReply.toUpperCase().includes(p.title.toUpperCase())) {
+        recommendedIds.push(p.id);
+      }
+    });
+    if (recommendedIds.length === 0 && products.length > 0) {
+      recommendedIds = [products[0].id];
+    }
+  }
+  recommendedIds = [...new Set(recommendedIds)].slice(0, 3);
+
+  let cardsHtml = "";
+  recommendedIds.forEach(id => {
+    const prod = products.find(p => p.id === id);
+    if (prod) {
+      let thumb = prod.image ? `<img src="${prod.image.trim()}" alt="${prod.title}">` : `<div class="cp-icon">${prod.icon}</div>`;
+      cardsHtml += `
+        <div class="chat-product-card">
+          ${thumb}
+          <div class="chat-product-info">
+            <h4>${prod.title}</h4>
+            <p>${formatMoney(prod.price)}</p>
+          </div>
+          <div class="chat-card-actions">
+            <button class="btn-chat-view" onclick="viewProductInCatalog(${prod.id})">Ver</button>
+            <button class="btn-chat-add" onclick="addToCart(${prod.id})">Agregar</button>
+          </div>
+        </div>`;
+    }
+  });
+
+  chatBody.innerHTML += `<div class="msg msg-bot">${botReply}${cardsHtml}</div>`;
+  chatBody.scrollTop = chatBody.scrollHeight;
 }
 
 document.getElementById("send-chat-btn").onclick = processAIChat;
