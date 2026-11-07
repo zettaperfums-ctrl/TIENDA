@@ -26,6 +26,71 @@ iframe[src*="netlify"], a[href*="netlify.com/wt?utm_source"], div[style*="z-inde
   100% { background-position: 0% 50%; }
 }
 
+@keyframes pulseLogo {
+  0% { transform: scale(0.95); opacity: 0.8; box-shadow: 0 0 15px rgba(0,242,254,0.3); }
+  50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 30px rgba(255,0,127,0.6); }
+  100% { transform: scale(0.95); opacity: 0.8; box-shadow: 0 0 15px rgba(0,242,254,0.3); }
+}
+
+/* PANTALLA DE CARGA INICIAL CON EL LOGO */
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#splash-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.splash-logo-container {
+  width: 90px;
+  height: 90px;
+  border-radius: 20px;
+  background: #16161c;
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  animation: pulseLogo 2s infinite ease-in-out;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 0 20px rgba(0,242,254,0.4);
+}
+
+.splash-logo-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.splash-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.splash-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-color);z-index:100;padding:0.7rem 1.2rem;display:flex;justify-content:space-between;align-items:center;}
 .brand{display:flex;align-items:center;gap:12px;}
 .brand-icon{height:54px;width:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#16161c;border:1.5px solid var(--primary);box-shadow:0 0 12px rgba(0,242,254,0.4);}
@@ -38,7 +103,6 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
 .hero-title{font-size:1.8rem;font-weight:700;margin-bottom:0.2rem;background:linear-gradient(45deg,#fff,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .hero-subtitle{color:var(--text-muted);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;}
 
-/* CONTENEDOR DEL MENÚ DE CATEGORÍAS (ESTILO 3 RAYITAS) */
 .menu-container {
   max-width: 1200px;
   margin: 1rem auto 0.5rem auto;
@@ -68,9 +132,7 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
   transition: 0.3s;
 }
 
-.menu-toggle-btn:hover {
-  background: rgba(0,242,254,0.1);
-}
+.menu-toggle-btn:hover { background: rgba(0,242,254,0.1); }
 
 .categories-dropdown {
   display: none;
@@ -87,9 +149,7 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
   flex-direction: column;
 }
 
-.categories-dropdown.show {
-  display: flex;
-}
+.categories-dropdown.show { display: flex; }
 
 .cat-item-btn {
   background: transparent;
@@ -105,10 +165,7 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
   width: 100%;
 }
 
-.cat-item-btn:last-child {
-  border-bottom: none;
-}
-
+.cat-item-btn:last-child { border-bottom: none; }
 .cat-item-btn:hover, .cat-item-btn.active {
   background: linear-gradient(270deg, var(--primary), var(--secondary), var(--primary));
   background-size: 200% 200%;
@@ -142,7 +199,7 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
   border-color: var(--primary);
 }
 
-.product-card:hover { transform: translateY(-5px); box-shadow: 0 0 25px rgba(0, 242, 254, 0.4), 0 0 15px rgba(255, 0, 127, 0.3); }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 0 25px rgba(0,242,254,0.4), 0 0 15px rgba(255, 0, 127, 0.3); }
 
 .product-img-container{
   width: 100%;
@@ -163,16 +220,8 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
 }
 
 .product-info{padding:1rem;display:flex;flex-direction:column;flex-grow:1;}
-
-.product-meta-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
+.product-meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .product-category{font-size:0.7rem;color:var(--primary);text-transform:uppercase;font-weight:700;}
-
 .product-gender {
   font-size: 0.65rem;
   font-weight: 700;
@@ -184,7 +233,6 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
   -webkit-text-fill-color: transparent;
   letter-spacing: 1px;
 }
-
 .product-title{font-size:1rem;font-weight:600;margin-bottom:6px;}
 .product-desc{font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;flex-grow:1;}
 .product-price{font-size:1.2rem;font-weight:700;color:var(--text-light);margin-bottom:12px;background:linear-gradient(45deg,#fff,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
@@ -250,6 +298,16 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
 </style>
 </head>
 <body>
+
+<!-- PANTALLA DE CARGA CON EL LOGO -->
+<div id="splash-screen">
+  <div class="splash-logo-container">
+    <img src="https://i.postimg.cc/02Dj1nhz/Logo.jpg" alt="Logo ZETTA">
+  </div>
+  <div class="splash-text">ZETTA PERFUM'S</div>
+  <div class="splash-sub">Cargando experiencia...</div>
+</div>
+
 <header>
 <div class="brand">
   <div class="brand-icon"><img src="https://i.postimg.cc/02Dj1nhz/Logo.jpg" alt="Logo ZETTA"></div>
@@ -263,15 +321,12 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
 <p class="hero-subtitle">L'ESSENCE DE L'INVISIBLE</p>
 </section>
 
-<!-- MENÚ DESPLEGABLE CON LAS 3 RAYITAS -->
 <div class="menu-container">
   <div class="menu-dropdown-wrapper">
     <button class="menu-toggle-btn" onclick="toggleCategoryMenu()">
       <i class="fa-solid fa-bars" style="color:var(--primary);"></i> Categorías <span id="current-cat-label" style="font-weight:normal; color:var(--text-muted); font-size:0.8rem;">(Todos)</span>
     </button>
-    <div class="categories-dropdown" id="categories-dropdown">
-      <!-- Se llena dinámicamente -->
-    </div>
+    <div class="categories-dropdown" id="categories-dropdown"></div>
   </div>
 </div>
 
@@ -312,34 +367,17 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
 const STORE_CONFIG = { name: "ZETTA PERFUM'S", whatsappNumber: "573052953417", currencySymbol: "$" };
 const CATALOG_URL = "https://script.google.com/macros/s/AKfycbzqoGiONu3DTfMzvfJQbpBzbXI9iIBwMYSMsPCrnpbnp8UtRH5k2VTxGxCFySUEfS8/exec"; 
 
-let products = [
-  {
-    id: 1, 
-    title: "YUM-YUMS", 
-    category: "perfumes arabes", 
-    price: 130000, 
-    desc: "Fresas y notas dulces exclusivas", 
-    gender: "mujer",
-    icon: "✨", 
-    image: "https://i.postimg.cc/BQ1mpNLY/IMG-20261016-WA0069.jpg"
-  }
-];
-
+let products = [];
 let categories = ["Todos"], cart = [], currentCategory = "Todos";
 
 function initStore() {
-  categories = ["Todos", ...new Set(products.map(p => p.category))];
   renderCategories(); 
-  renderProducts();
   tryFetchCatalog();
 }
 
 async function tryFetchCatalog() {
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 4000);
-    const response = await fetch(CATALOG_URL, { signal: controller.signal });
-    clearTimeout(timeoutId);
+    const response = await fetch(CATALOG_URL);
     const data = await response.json();
     if (data && data.length > 0) {
       products = data.map((item, index) => ({
@@ -357,7 +395,13 @@ async function tryFetchCatalog() {
       renderProducts();
     }
   } catch (e) {
-    console.log("Usando catálogo local.");
+    console.log("Error al cargar la red.");
+  } finally {
+    // OCULTAR LA PANTALLA DE CARGA CON EL LOGO CUANDO TERMINA (ÉXITO O FALLO)
+    const splash = document.getElementById("splash-screen");
+    if(splash) {
+      splash.classList.add("fade-out");
+    }
   }
 }
 
@@ -367,7 +411,6 @@ function toggleCategoryMenu() {
   document.getElementById("categories-dropdown").classList.toggle("show");
 }
 
-// Cerrar el menú si se hace clic fuera de él
 window.onclick = function(event) {
   if (!event.target.matches('.menu-toggle-btn') && !event.target.closest('.menu-toggle-btn')) {
     const dropdown = document.getElementById("categories-dropdown");
