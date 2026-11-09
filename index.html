@@ -32,64 +32,21 @@ iframe[src*="netlify"], a[href*="netlify.com/wt?utm_source"], div[style*="z-inde
   100% { transform: scale(0.95); opacity: 0.8; box-shadow: 0 0 15px rgba(0,242,254,0.3); }
 }
 
-/* PANTALLA DE CARGA INICIAL CON EL LOGO */
 #splash-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-dark);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--bg-dark); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-
-#splash-screen.fade-out {
-  opacity: 0;
-  visibility: hidden;
-}
-
+#splash-screen.fade-out { opacity: 0; visibility: hidden; }
 .splash-logo-container {
-  width: 90px;
-  height: 90px;
-  border-radius: 20px;
-  background: #16161c;
-  border: 2px solid var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  animation: pulseLogo 2s infinite ease-in-out;
-  margin-bottom: 1.2rem;
+  width: 90px; height: 90px; border-radius: 20px; background: #16161c;
+  border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center;
+  overflow: hidden; animation: pulseLogo 2s infinite ease-in-out; margin-bottom: 1.2rem;
   box-shadow: 0 0 20px rgba(0,242,254,0.4);
 }
-
-.splash-logo-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.splash-text {
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  background: linear-gradient(45deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.5rem;
-}
-
-.splash-sub {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
+.splash-logo-container img { width: 100%; height: 100%; object-fit: cover; }
+.splash-text { font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; background: linear-gradient(45deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+.splash-sub { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
 
 header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-color);z-index:100;padding:0.7rem 1.2rem;display:flex;justify-content:space-between;align-items:center;}
 .brand{display:flex;align-items:center;gap:12px;}
@@ -103,154 +60,63 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
 .hero-title{font-size:1.8rem;font-weight:700;margin-bottom:0.2rem;background:linear-gradient(45deg,#fff,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .hero-subtitle{color:var(--text-muted);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;}
 
-.menu-container {
-  max-width: 1200px;
-  margin: 1rem auto 0.5rem auto;
-  padding: 0 1rem;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.menu-dropdown-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
+.menu-container { max-width: 1200px; margin: 1rem auto 0.5rem auto; padding: 0 1rem; display: flex; justify-content: flex-start; }
+.menu-dropdown-wrapper { position: relative; display: inline-block; }
 .menu-toggle-btn {
-  background: var(--card-bg);
-  border: 1.5px solid var(--primary);
-  color: var(--text-light);
-  padding: 8px 16px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 0 12px rgba(0,242,254,0.25);
-  transition: 0.3s;
+  background: var(--card-bg); border: 1.5px solid var(--primary); color: var(--text-light);
+  padding: 8px 16px; border-radius: 12px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
+  display: flex; align-items: center; gap: 8px; box-shadow: 0 0 12px rgba(0,242,254,0.25); transition: 0.3s;
 }
-
 .menu-toggle-btn:hover { background: rgba(0,242,254,0.1); }
-
 .categories-dropdown {
-  display: none;
-  position: absolute;
-  top: 110%;
-  left: 0;
-  background: var(--card-bg);
-  min-width: 200px;
-  border: 1.5px solid var(--primary);
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-  z-index: 90;
-  overflow: hidden;
-  flex-direction: column;
+  display: none; position: absolute; top: 110%; left: 0; background: var(--card-bg);
+  min-width: 200px; border: 1.5px solid var(--primary); border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.8); z-index: 90; overflow: hidden; flex-direction: column;
 }
-
 .categories-dropdown.show { display: flex; }
-
 .cat-item-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  padding: 10px 16px;
-  text-align: left;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 500;
-  border-bottom: 1px solid var(--border-color);
-  transition: 0.2s;
-  width: 100%;
+  background: transparent; border: none; color: var(--text-muted); padding: 10px 16px;
+  text-align: left; cursor: pointer; font-size: 0.85rem; font-weight: 500;
+  border-bottom: 1px solid var(--border-color); transition: 0.2s; width: 100%;
 }
-
 .cat-item-btn:last-child { border-bottom: none; }
 .cat-item-btn:hover, .cat-item-btn.active {
   background: linear-gradient(270deg, var(--primary), var(--secondary), var(--primary));
-  background-size: 200% 200%;
-  animation: neonFlow 4s ease infinite;
-  color: #fff;
-  font-weight: 600;
+  background-size: 200% 200%; animation: neonFlow 4s ease infinite; color: #fff; font-weight: 600;
 }
 
 .catalog-container{max-width:1200px;margin:0 auto;padding:1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem;}
 
 .product-card {
-  background: var(--card-bg);
-  border-radius: 20px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  background: var(--card-bg); border-radius: 20px; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; transition: all 0.3s ease; border: 2px solid transparent;
   background-image: linear-gradient(var(--card-bg), var(--card-bg)), linear-gradient(270deg, var(--primary), var(--secondary), var(--primary));
-  background-size: 200% 200%;
-  animation: neonFlow 6s ease infinite;
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  background-size: 200% 200%; animation: neonFlow 6s ease infinite; background-origin: border-box;
+  background-clip: padding-box, border-box; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
-
-.product-card.highlight {
-  transform: scale(1.03);
-  box-shadow: 0 0 25px var(--primary);
-  border-color: var(--primary);
-}
-
+.product-card.highlight { transform: scale(1.03); box-shadow: 0 0 25px var(--primary); border-color: var(--primary); }
 .product-card:hover { transform: translateY(-5px); box-shadow: 0 0 25px rgba(0,242,254,0.4), 0 0 15px rgba(255, 0, 127, 0.3); }
 
-.product-img-container{
-  width: 100%;
-  height: 250px;
-  background: #16161c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.product-img-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  display: block;
-}
-
+.product-img-container{ width: 100%; height: 250px; background: #16161c; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.product-img-container img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
 .product-info{padding:1rem;display:flex;flex-direction:column;flex-grow:1;}
 .product-meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .product-category{font-size:0.7rem;color:var(--primary);text-transform:uppercase;font-weight:700;}
 .product-gender {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
   background: linear-gradient(270deg, var(--primary), var(--secondary), var(--primary));
-  background-size: 200% 200%;
-  animation: neonFlow 4s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 1px;
+  background-size: 200% 200%; animation: neonFlow 4s ease infinite;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;
 }
 .product-title{font-size:1rem;font-weight:600;margin-bottom:6px;}
 .product-desc{font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;flex-grow:1;}
 .product-price{font-size:1.2rem;font-weight:700;color:var(--text-light);margin-bottom:12px;background:linear-gradient(45deg,#fff,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
 .add-to-cart-btn{
-  width:100%;
-  background:linear-gradient(270deg,var(--primary),#00b4db,var(--secondary),var(--primary));
-  background-size:300% 300%;
-  animation:neonFlow 5s ease infinite;
-  color:#000;
-  border:none;
-  padding:12px;
-  border-radius:8px;
-  font-weight:700;
-  cursor:pointer;
-  font-size:0.95rem;
-  box-shadow:0 0 15px rgba(0,242,254,0.3);
-  transition:0.2s;
+  width:100%; background:linear-gradient(270deg,var(--primary),#00b4db,var(--secondary),var(--primary));
+  background-size:300% 300%; animation:neonFlow 5s ease infinite; color:#000; border:none;
+  padding:12px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.95rem;
+  box-shadow:0 0 15px rgba(0,242,254,0.3); transition:0.2s;
 }
 .add-to-cart-btn:hover {filter: brightness(1.1); box-shadow: 0 0 25px rgba(0,242,254,0.7);}
 
@@ -299,7 +165,6 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA CON EL LOGO -->
 <div id="splash-screen">
   <div class="splash-logo-container">
     <img src="https://i.postimg.cc/02Dj1nhz/Logo.jpg" alt="Logo ZETTA">
@@ -355,10 +220,10 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
   <button class="close-cart" id="close-chat-btn">&times;</button>
 </div>
 <div class="chat-body" id="chat-body">
-  <div class="msg msg-bot">¡Hola! Qué gusto saludarte en ZETTA 🤝✨ Soy tu asesor experto en perfumería. Cuéntame, ¿buscas algo para hombre, mujer o unisex? ¡Te ayudaré a elegir la ideal!</div>
+  <div class="msg msg-bot">¡Hola! Qué gusto saludarte en ZETTA 🤝✨ Soy tu asesor experto en perfumería. Dime el nombre, marca, notas (dulce, amaderado...) o género (hombre, mujer...) y te mostraré el perfume ideal.</div>
 </div>
 <div class="chat-footer-box">
-<input type="text" class="chat-input" id="chat-input" placeholder="Ej: Busco un perfume de hombre...">
+<input type="text" class="chat-input" id="chat-input" placeholder="Ej: Busco un perfume amaderado de hombre...">
 <button class="chat-send-btn" id="send-chat-btn"><i class="fa-solid fa-paper-plane"></i></button>
 </div>
 </div>
@@ -397,11 +262,8 @@ async function tryFetchCatalog() {
   } catch (e) {
     console.log("Error al cargar la red.");
   } finally {
-    // OCULTAR LA PANTALLA DE CARGA CON EL LOGO CUANDO TERMINA (ÉXITO O FALLO)
     const splash = document.getElementById("splash-screen");
-    if(splash) {
-      splash.classList.add("fade-out");
-    }
+    if(splash) splash.classList.add("fade-out");
   }
 }
 
@@ -512,41 +374,79 @@ function processAIChat() {
   chatBody.scrollTop = chatBody.scrollHeight;
 
   const typingId = "typing-" + Date.now();
-  chatBody.innerHTML += `<div class="msg msg-bot" id="${typingId}">Analizando perfil y género de fragancias... ✨</div>`;
+  chatBody.innerHTML += `<div class="msg msg-bot" id="${typingId}">Analizando el catálogo de ZETTA... ✨</div>`;
   chatBody.scrollTop = chatBody.scrollHeight;
 
   setTimeout(() => {
     const typingElement = document.getElementById(typingId);
     if(typingElement) typingElement.remove();
 
-    const query = text.toLowerCase();
-    const isMan = query.includes("hombre") || query.includes("caballero") || query.includes("masculino");
-    const isWoman = query.includes("mujer") || query.includes("dama") || query.includes("femenina");
-    const isUnisex = query.includes("unisex");
+    const query = text.toLowerCase().trim();
+    const queryWords = query.split(" ").filter(w => w.length > 2);
 
+    // Identificar intenciones de género
+    const wantsMan = query.includes("hombre") || query.includes("caballero") || query.includes("masculino");
+    const wantsWoman = query.includes("mujer") || query.includes("dama") || query.includes("femenina");
+    const wantsUnisex = query.includes("unisex");
+
+    // Puntuar inteligentemente cada producto leyendo 'title', 'desc' y 'gender'
     let scoredProducts = products.map(prod => {
       let score = 0;
-      const g = (prod.gender || "").toLowerCase();
-      const searchableText = `${prod.title} ${prod.desc} ${prod.category} ${g}`.toLowerCase();
+      const titleLower = prod.title.toLowerCase();
+      const descLower = prod.desc.toLowerCase();
+      const genderLower = prod.gender.toLowerCase();
 
-      if (isMan && g.includes("hombre")) score += 20;
-      if (isWoman && g.includes("mujer")) score += 20;
-      if (isUnisex && g.includes("unisex")) score += 20;
-      if (searchableText.includes(query)) score += 5;
+      // 1. Coincidencia directa con el nombre o marca (ej: "nautica", "lacoste", "khamra")
+      queryWords.forEach(w => {
+        if (titleLower.includes(w)) score += 25;
+        if (descLower.includes(w)) score += 10;
+      });
+
+      // 2. Coincidencia estricta de género si el usuario lo especificó
+      if (wantsMan) {
+        if (genderLower.includes("hombre") || genderLower.includes("masculino")) score += 15;
+        else if (genderLower.includes("mujer")) score -= 30; // Penalizar si pide de hombre y es de mujer
+      }
+      if (wantsWoman) {
+        if (genderLower.includes("mujer") || genderLower.includes("femenina")) score += 15;
+        else if (genderLower.includes("hombre")) score -= 30; // Penalizar si pide de mujer y es de hombre
+      }
+      if (wantsUnisex && genderLower.includes("unisex")) {
+        score += 15;
+      }
+
+      // 3. Coincidencia por notas olfativas clave en la descripción ('desc')
+      if (query.includes("amaderado") && (descLower.includes("amaderado") || descLower.includes("madera"))) score += 15;
+      if (query.includes("dulce") && (descLower.includes("dulce") || descLower.includes("fresa") || descLower.includes("frutal"))) score += 15;
+      if (query.includes("fresco") && (descLower.includes("fresc") || descLower.includes("acuático") || descLower.includes("limp"))) score += 15;
+      if (query.includes("floral") && descLower.includes("floral")) score += 15;
+      if (query.includes("oriental") && descLower.includes("oriental")) score += 15;
+      if (query.includes("ámbar") && descLower.includes("ámbar")) score += 15;
 
       return { product: prod, score: score };
     });
 
+    // Ordenar de mayor a menor puntuación
     scoredProducts.sort((a, b) => b.score - a.score);
 
-    let bestMatches = scoredProducts.filter(item => item.score > 0).map(item => item.product);
+    // Filtrar solo los que tengan un puntaje útil, o tomar los mejores
+    let bestMatches = scoredProducts.filter(item => item.score > 5).map(item => item.product);
+    
     if (bestMatches.length === 0) {
-      bestMatches = products.slice(0, 3);
-    } else {
-      bestMatches = bestMatches.slice(0, 3);
+      // Si no hay alta coincidencia pero dio una palabra clave general, buscar por similitud en descripción
+      bestMatches = scoredProducts.filter(item => item.score > 0).map(item => item.product);
     }
 
-    let botReply = `¡Excelente elección! Buscando opciones para "${text}", estas son las fragancias ideales que tenemos disponibles:`;
+    if (bestMatches.length === 0) {
+      bestMatches = products.slice(0, 3); // Muestra sugerencias principales si no encuentra coincidencia exacta
+    }
+
+    bestMatches = bestMatches.slice(0, 3); // Máximo 3 resultados recomendados
+
+    let botReply = `¡Excelente elección! Analizando las notas y géneros, aquí tienes la opción ideal para "${text}":`;
+    if (bestMatches.length > 1) {
+      botReply = `¡Perfecto! Basado en tu búsqueda de "${text}", estas son las mejores recomendaciones de ZETTA:`;
+    }
     
     let cardsHtml = "";
     bestMatches.forEach(prod => {
@@ -555,7 +455,7 @@ function processAIChat() {
         <div class="chat-product-card">
           ${thumb}
           <div class="chat-product-info">
-            <h4>${prod.title} <span style="font-size:0.65rem; background:linear-gradient(270deg,var(--primary),var(--secondary)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:bold;">(${prod.gender || 'unisex'})</span></h4>
+            <h4>${prod.title} <span style="font-size:0.65rem; background:linear-gradient(270deg,var(--primary),var(--secondary)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:bold;">(${prod.gender})</span></h4>
             <p>${formatMoney(prod.price)}</p>
             <span style="font-size:0.68rem; color:var(--text-muted); display:block; margin-top:2px;">${prod.desc}</span>
           </div>
