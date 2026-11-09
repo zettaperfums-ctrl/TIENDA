@@ -33,7 +33,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 20px;
-            background: rgba(10, 10, 12, 0.9);
+            background: rgba(10, 10, 12, 0.95);
             border-bottom: 1px solid rgba(0, 242, 254, 0.3);
             position: sticky;
             top: 0;
@@ -85,7 +85,7 @@
 
         .store-banner {
             text-align: center;
-            padding: 25px 20px;
+            padding: 20px 20px 10px 20px;
         }
 
         .store-banner h2 {
@@ -103,55 +103,65 @@
             text-transform: uppercase;
         }
 
-        /* BARRAS DE CATEGORÍAS Y FILTROS */
-        .categories-bar {
-            display: flex;
-            gap: 10px;
+        /* MENÚ DE CATEGORÍAS Y SUBMENÚS DESPLEGABLES */
+        .categories-container {
             padding: 10px 20px;
-            overflow-x: auto;
-            white-space: nowrap;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .category-chip {
+        .main-category-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--neon-cyan);
             color: var(--text-light);
-            padding: 8px 16px;
-            border-radius: 15px;
-            font-size: 0.85rem;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 0 5px rgba(0, 242, 254, 0.2);
+            width: 100%;
+            text-align: left;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
             transition: all 0.3s ease;
         }
 
-        .category-chip.active {
-            background: rgba(0, 242, 254, 0.2);
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        .main-category-btn.active {
+            background: rgba(0, 242, 254, 0.15);
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
         }
 
-        .gender-filter-bar {
-            display: flex;
+        /* Submenú oculto por defecto que se despliega */
+        .submenu {
+            display: none;
+            padding-left: 15px;
+            margin-bottom: 12px;
             gap: 8px;
-            padding: 0 20px 15px 20px;
-            overflow-x: auto;
-            white-space: nowrap;
+            flex-wrap: wrap;
+        }
+
+        .submenu.show {
+            display: flex;
         }
 
         .sub-chip {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 0, 127, 0.4);
             color: var(--text-light);
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .sub-chip.active {
-            background: rgba(255, 0, 127, 0.2);
+        .sub-chip:hover, .sub-chip.active {
+            background: rgba(255, 0, 127, 0.25);
             border-color: var(--neon-fuchsia);
-            box-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
+            box-shadow: 0 0 8px rgba(255, 0, 127, 0.5);
         }
 
         .catalog-container {
@@ -260,36 +270,35 @@
         <p>L'Essence de l'Invisible</p>
     </section>
 
-    <!-- CATEGORÍAS PRINCIPALES -->
-    <div class="categories-bar">
-        <div class="category-chip active" onclick="filtrarCategoria('todos', this)">✨ Todos</div>
-        <div class="category-chip" onclick="filtrarCategoria('arabes', this)">🕌 Perfumes Árabes</div>
-        <div class="category-chip" onclick="filtrarCategoria('clasicos', this)">🌟 Perfumes Clásicos</div>
-    </div>
+    <!-- MENÚ DE CATEGORÍAS Y SUBMENÚS DESPLEGABLES -->
+    <div class="categories-container">
+        <!-- BOTÓN TODOS -->
+        <button class="main-category-btn active" onclick="filtrarTodo()">✨ Ver Todos los Perfumes</button>
 
-    <!-- SUBMENÚ DE GÉNERO -->
-    <div class="gender-filter-bar">
-        <button class="sub-chip active" onclick="filtrarGenero('todos', this)">🚻 Todos los géneros</button>
-        <button class="sub-chip" onclick="filtrarGenero('hombre', this)">👨 Hombre</button>
-        <button class="sub-chip" onclick="filtrarGenero('mujer', this)">👩 Mujer</button>
-        <button class="sub-chip" onclick="filtrarGenero('unisex', this)">✨ Unisex</button>
+        <!-- CATEGORÍA ÁRABES -->
+        <button class="main-category-btn" onclick="toggleSubmenu('submenu-arabes', this)">
+            🕌 Perfumes Árabes <span>▼</span>
+        </button>
+        <div id="submenu-arabes" class="submenu">
+            <button class="sub-chip" onclick="filtrarCategoriaYGenero('arabes', 'hombre')">👨 Hombre</button>
+            <button class="sub-chip" onclick="filtrarCategoriaYGenero('arabes', 'mujer')">👩 Mujer</button>
+            <button class="sub-chip" onclick="filtrarCategoriaYGenero('arabes', 'unisex')">✨ Unisex</button>
+        </div>
+
+        <!-- CATEGORÍA CLÁSICOS -->
+        <button class="main-category-btn" onclick="toggleSubmenu('submenu-clasicos', this)">
+            🌟 Perfumes Clásicos <span>▼</span>
+        </button>
+        <div id="submenu-clasicos" class="submenu">
+            <button class="sub-chip" onclick="filtrarCategoriaYGenero('clasicos', 'hombre')">👨 Hombre</button>
+            <button class="sub-chip" onclick="filtrarCategoriaYGenero('clasicos', 'mujer')">👩 Mujer</button>
+            <button class="sub-chip" onclick="filtrarCategoriaYGenero('clasicos', 'unisex')">✨ Unisex</button>
+        </div>
     </div>
 
     <!-- CATÁLOGO DE PRODUCTOS -->
     <main class="catalog-container">
-        <!-- Los productos se cargarán dinámicamente desde Google Sheets o tu base de datos -->
-        <div class="product-card">
-            <div class="product-info">
-                <span style="font-size: 0.75rem; color: var(--neon-fuchsia); text-transform: uppercase; font-weight: bold;">Árabes • Unisex</span>
-                <h3>ARMAF ETER DESERT</h3>
-                <div class="price">$125.000</div>
-                <p>100ml huele a una combinación vibrante de frutas tropicales dulces, rosa elegante y un fondo cálido, especiado y de cuero.</p>
-            </div>
-            <div class="card-actions">
-                <button class="btn-view">Ver</button>
-                <button class="btn-add">Agregar</button>
-            </div>
-        </div>
+        <!-- Los productos se cargan dinámicamente -->
     </main>
 
     <!-- BOTÓN ASESOR IA -->
@@ -297,33 +306,59 @@
         ✨ Asesor ZETTA
     </button>
 
-    <!-- LÓGICA DE FILTRADO Y CONEXIÓN -->
+    <!-- LÓGICA DE JAVASCRIPT -->
     <script>
-        let categoriaActual = 'todos';
-        let generoActual = 'todos';
+        let categoriaSeleccionada = 'todos';
+        let generoSeleccionado = 'todos';
         let productosGlobales = []; // Aquí se cargan tus datos de Google Sheets
 
-        function filtrarCategoria(categoria, elemento) {
-            categoriaActual = categoria;
-            document.querySelectorAll('.categories-bar .category-chip').forEach(el => el.classList.remove('active'));
-            elemento.classList.add('active');
+        // Función para abrir/cerrar los submenús al hacer clic en Árabes o Clásicos
+        function toggleSubmenu(idSubmenu, elemento) {
+            // Cerrar otros submenús abiertos
+            document.querySelectorAll('.submenu').forEach(sub => {
+                if(sub.id !== idSubmenu) sub.classList.remove('show');
+            });
+            document.querySelectorAll('.main-category-btn').forEach(btn => {
+                if(btn !== elemento) btn.classList.remove('active');
+            });
+
+            // Alternar el submenús actual
+            const submenu = document.getElementById(idSubmenu);
+            submenu.classList.toggle('show');
+            elemento.classList.toggle('active');
+        }
+
+        // Mostrar todo
+        function filtrarTodo() {
+            categoriaSeleccionada = 'todos';
+            generoSeleccionado = 'todos';
+            document.querySelectorAll('.submenu').forEach(sub => sub.classList.remove('show'));
+            document.querySelectorAll('.main-category-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.sub-chip').forEach(chip => chip.classList.remove('active'));
+            document.querySelector('.main-category-btn').classList.add('active');
             aplicarFiltros();
         }
 
-        function filtrarGenero(genero, elemento) {
-            generoActual = genero;
-            document.querySelectorAll('.gender-filter-bar .sub-chip').forEach(el => el.classList.remove('active'));
-            elemento.classList.add('active');
+        // Filtrar por categoría (árabes/clasicos) y género (hombre/mujer/unisex)
+        function filtrarCategoriaYGenero(categoria, genero) {
+            categoriaSeleccionada = categoria;
+            generoSeleccionado = genero;
+
+            // Marcar visualmente el botón de género presionado
+            document.querySelectorAll('.sub-chip').forEach(chip => chip.classList.remove('active'));
+            event.target.classList.add('active');
+
             aplicarFiltros();
         }
 
+        // Lógica de filtrado sobre el catálogo
         function aplicarFiltros() {
             let productosFiltrados = productosGlobales.filter(producto => {
                 let catProd = producto.categoria ? producto.categoria.toLowerCase() : '';
                 let genProd = producto.genero ? producto.genero.toLowerCase() : '';
 
-                let cumpleCategoria = (categoriaActual === 'todos' || catProd.includes(categoriaActual));
-                let cumpleGenero = (generoActual === 'todos' || genProd.includes(generoActual));
+                let cumpleCategoria = (categoriaSeleccionada === 'todos' || catProd.includes(categoriaSeleccionada));
+                let cumpleGenero = (generoSeleccionado === 'todos' || genProd.includes(generoSeleccionado));
 
                 return cumpleCategoria && cumpleGenero;
             });
@@ -336,7 +371,7 @@
             contenedor.innerHTML = '';
 
             if (listaProductos.length === 0) {
-                contenedor.innerHTML = `<p style="text-align: center; color: #a1a1a6; grid-column: 1/-1; padding: 30px;">No se encontraron perfumes con estos filtros.</p>`;
+                contenedor.innerHTML = `<p style="text-align: center; color: #a1a1a6; grid-column: 1/-1; padding: 40px;">No se encontraron perfumes para esta selección.</p>`;
                 return;
             }
 
