@@ -1,398 +1,537 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZETTA PERFUM'S - L'Essence de l'Invisible</title>
-    <!-- Estilos CSS integrados -->
-    <style>
-        :root {
-            --neon-cyan: #00f2fe;
-            --neon-fuchsia: #ff007f;
-            --bg-deep: #0a0a0c;
-            --text-light: #f5f5f7;
-            --card-bg: rgba(18, 18, 22, 0.85);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZETTA PERFUM'S</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--primary:#00f2fe;--secondary:#ff007f;--bg-dark:#0a0a0c;--card-bg:#141418;--text-light:#f5f5f7;--text-muted:#a1a1a6;--border-color:#26262e;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background-color:var(--bg-dark);color:var(--text-light);padding-bottom:90px;scroll-behavior:smooth;}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+iframe[src*="netlify"], a[href*="netlify.com/wt?utm_source"], div[style*="z-index: 2147483647"], img[alt*="Netlify"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
 
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-light);
-            padding-bottom: 90px;
-            scroll-behavior: smooth;
-        }
+@keyframes neonFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(10, 10, 12, 0.95);
-            border-bottom: 1px solid rgba(0, 242, 254, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+@keyframes pulseLogo {
+  0% { transform: scale(0.95); opacity: 0.8; box-shadow: 0 0 15px rgba(0,242,254,0.3); }
+  50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 30px rgba(255,0,127,0.6); }
+  100% { transform: scale(0.95); opacity: 0.8; box-shadow: 0 0 15px rgba(0,242,254,0.3); }
+}
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+#splash-screen {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--bg-dark); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#splash-screen.fade-out { opacity: 0; visibility: hidden; }
+.splash-logo-container {
+  width: 90px; height: 90px; border-radius: 20px; background: #16161c;
+  border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center;
+  overflow: hidden; animation: pulseLogo 2s infinite ease-in-out; margin-bottom: 1.2rem;
+  box-shadow: 0 0 20px rgba(0,242,254,0.4);
+}
+.splash-logo-container img { width: 100%; height: 100%; object-fit: cover; }
+.splash-text { font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; background: linear-gradient(45deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+.splash-sub { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
 
-        .logo-container {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: 2px solid var(--neon-cyan);
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #111;
-            font-weight: bold;
-            color: var(--neon-cyan);
-        }
+header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-color);z-index:100;padding:0.7rem 1.2rem;display:flex;justify-content:space-between;align-items:center;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{height:54px;width:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#16161c;border:1.5px solid var(--primary);box-shadow:0 0 12px rgba(0,242,254,0.4);}
+.brand-icon img{width:100%;height:100%;object-fit:cover;display:block;}
+.brand-name{font-size:1.2rem;font-weight:700;letter-spacing:1.5px;background:linear-gradient(45deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cart-btn{position:relative;background:transparent;border:1px solid var(--primary);color:var(--primary);padding:6px 14px;border-radius:20px;cursor:pointer;font-weight:600;box-shadow:0 0 10px rgba(0,242,254,0.2);}
+.cart-badge{position:absolute;top:-8px;right:-8px;background:var(--secondary);color:#fff;font-size:0.75rem;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;}
 
-        h1 {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            letter-spacing: 1px;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-fuchsia));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.hero-banner{width:100%;background:radial-gradient(circle,rgba(20,20,30,1)0%,rgba(10,10,12,1)100%);padding:2.5rem 1rem 1.5rem 1rem;text-align:center;border-bottom:1px solid var(--border-color);display:flex;flex-direction:column;align-items:center;}
+.hero-title{font-size:1.8rem;font-weight:700;margin-bottom:0.2rem;background:linear-gradient(45deg,#fff,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-subtitle{color:var(--text-muted);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;}
 
-        .cart-btn {
-            background: transparent;
-            border: 2px solid var(--neon-cyan);
-            color: var(--text-light);
-            padding: 6px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 600;
-        }
+/* MENÚ DESPLEGABLE EN ACORDEÓN */
+.menu-container { max-width: 1200px; margin: 1rem auto 0.5rem auto; padding: 0 1rem; }
+.menu-dropdown-wrapper { position: relative; display: inline-block; width: 100%; max-width: 300px; }
+.menu-toggle-btn {
+  background: var(--card-bg); border: 1.5px solid var(--primary); color: var(--text-light);
+  padding: 10px 16px; border-radius: 12px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
+  display: flex; justify-content: space-between; align-items: center; width: 100%;
+  box-shadow: 0 0 12px rgba(0,242,254,0.25); transition: 0.3s;
+}
+.menu-toggle-btn:hover { background: rgba(0,242,254,0.1); }
+.categories-dropdown {
+  display: none; position: absolute; top: 110%; left: 0; background: var(--card-bg);
+  width: 100%; border: 1.5px solid var(--primary); border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.8); z-index: 90; overflow: hidden; flex-direction: column;
+}
+.categories-dropdown.show { display: flex; }
 
-        .store-banner {
-            text-align: center;
-            padding: 20px 20px 10px 20px;
-        }
+.cat-group { border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; }
+.cat-group:last-child { border-bottom: none; }
 
-        .store-banner h2 {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-fuchsia));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.cat-main-btn {
+  background: transparent; border: none; color: var(--text-light); padding: 12px 16px;
+  text-align: left; cursor: pointer; font-size: 0.9rem; font-weight: 600;
+  display: flex; justify-content: space-between; align-items: center; transition: 0.2s; width: 100%;
+}
+.cat-main-btn:hover { background: rgba(0,242,254,0.08); color: var(--primary); }
+.cat-main-btn.active { color: var(--primary); background: rgba(0,242,254,0.12); }
 
-        .store-banner p {
-            color: #a1a1a6;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+.sub-menu { display: none; flex-direction: column; background: rgba(10,10,12,0.6); padding-left: 10px; }
+.sub-menu.show { display: flex; }
 
-        /* MENÚ DE CATEGORÍAS Y SUBMENÚS DESPLEGABLES */
-        .categories-container {
-            padding: 10px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+.sub-item-btn {
+  background: transparent; border: none; color: var(--text-muted); padding: 9px 16px;
+  text-align: left; cursor: pointer; font-size: 0.82rem; font-weight: 500;
+  border-top: 1px solid rgba(255,255,255,0.03); transition: 0.2s; width: 100%;
+  display: flex; align-items: center; gap: 8px;
+}
+.sub-item-btn:hover, .sub-item-btn.active {
+  color: var(--secondary); font-weight: 600; background: rgba(255,0,127,0.08);
+}
 
-        .main-category-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--neon-cyan);
-            color: var(--text-light);
-            padding: 12px 18px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
-            transition: all 0.3s ease;
-        }
+.catalog-container{max-width:1200px;margin:0 auto;padding:1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem;}
 
-        .main-category-btn.active {
-            background: rgba(0, 242, 254, 0.15);
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
-        }
+.product-card {
+  background: var(--card-bg); border-radius: 20px; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; transition: all 0.3s ease; border: 2px solid transparent;
+  background-image: linear-gradient(var(--card-bg), var(--card-bg)), linear-gradient(270deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% 200%; animation: neonFlow 6s ease infinite; background-origin: border-box;
+  background-clip: padding-box, border-box; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+.product-card.highlight { transform: scale(1.03); box-shadow: 0 0 25px var(--primary); border-color: var(--primary); }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 0 25px rgba(0,242,254,0.4), 0 0 15px rgba(255, 0, 127, 0.3); }
 
-        /* Submenú oculto por defecto que se despliega */
-        .submenu {
-            display: none;
-            padding-left: 15px;
-            margin-bottom: 12px;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
+.product-img-container{ width: 100%; height: 250px; background: #16161c; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.product-img-container img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
+.product-info{padding:1rem;display:flex;flex-direction:column;flex-grow:1;}
+.product-meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.product-category{font-size:0.7rem;color:var(--primary);text-transform:uppercase;font-weight:700;}
+.product-gender {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  background: linear-gradient(270deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% 200%; animation: neonFlow 4s ease infinite;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;
+}
+.product-title{font-size:1rem;font-weight:600;margin-bottom:6px;}
+.product-desc{font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;flex-grow:1;}
+.product-price{font-size:1.2rem;font-weight:700;color:var(--text-light);margin-bottom:12px;background:linear-gradient(45deg,#fff,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
-        .submenu.show {
-            display: flex;
-        }
+.add-to-cart-btn{
+  width:100%; background:linear-gradient(270deg,var(--primary),#00b4db,var(--secondary),var(--primary));
+  background-size:300% 300%; animation:neonFlow 5s ease infinite; color:#000; border:none;
+  padding:12px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.95rem;
+  box-shadow:0 0 15px rgba(0,242,254,0.3); transition:0.2s;
+}
+.add-to-cart-btn:hover {filter: brightness(1.1); box-shadow: 0 0 25px rgba(0,242,254,0.7);}
 
-        .sub-chip {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 0, 127, 0.4);
-            color: var(--text-light);
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.cart-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;justify-content:flex-end;z-index:1000;}
+.cart-overlay.open{display:flex;}
+.cart-modal{width:100%;max-width:400px;background:var(--bg-dark);height:100%;display:flex;flex-direction:column;padding:1.2rem;border-left:1px solid var(--border-color);}
+.cart-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-color);padding-bottom:0.8rem;}
+.close-cart{background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;}
+.cart-items{flex-grow:1;overflow-y:auto;margin:1rem 0;display:flex;flex-direction:column;gap:0.8rem;}
+.cart-item{display:flex;align-items:center;gap:10px;background:var(--card-bg);padding:8px;border-radius:8px;}
+.cart-item-icon{font-size:1.5rem;width:45px;height:45px;background:#1e1e24;display:flex;align-items:center;justify-content:center;border-radius:4px;overflow:hidden;}
+.cart-item-icon img{width:100%;height:100%;object-fit:contain;display:block;}
+.cart-item-details{flex-grow:1;}
+.cart-item-title{font-size:0.85rem;font-weight:600;}
+.cart-item-price{font-size:0.8rem;color:var(--primary);}
+.qty-controls{display:flex;align-items:center;gap:6px;margin-top:4px;}
+.qty-btn{background:var(--border-color);color:#fff;border:none;width:20px;height:20px;border-radius:4px;cursor:pointer;}
+.delete-item{color:#e74c3c;background:none;border:none;cursor:pointer;}
+.cart-total{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:700;margin-bottom:1rem;}
+.checkout-form{display:flex;flex-direction:column;gap:8px;margin-bottom:0.8rem;}
+.checkout-form input{background:var(--card-bg);border:1px solid var(--border-color);padding:10px;border-radius:6px;color:#fff;}
+.send-whatsapp-btn{width:100%;background:#25d366;color:#fff;border:none;padding:12px;border-radius:6px;font-size:0.95rem;font-weight:700;cursor:pointer;}
 
-        .sub-chip:hover, .sub-chip.active {
-            background: rgba(255, 0, 127, 0.25);
-            border-color: var(--neon-fuchsia);
-            box-shadow: 0 0 8px rgba(255, 0, 127, 0.5);
-        }
+.recommendations-btn{position:fixed;bottom:20px;right:15px;background:linear-gradient(270deg,var(--secondary),var(--primary),var(--secondary));background-size:200% 200%;animation:neonFlow 4s ease infinite;color:#fff;border:none;padding:10px 16px;border-radius:30px;font-weight:700;cursor:pointer;z-index:999;display:flex;align-items:center;gap:6px;font-size:0.85rem;box-shadow:0 4px 20px rgba(255,0,127,0.5);}
+.chat-window{position:fixed;bottom:80px;right:20px;width:360px;max-width:90vw;height:500px;background:var(--bg-dark);border:1.5px solid var(--primary);border-radius:16px;display:none;flex-direction:column;z-index:1000;box-shadow:0 10px 30px rgba(0,0,0,0.8);}
+.chat-window.active{display:flex;}
+.chat-body{flex-grow:1;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;font-size:0.82rem;}
+.msg{max-width:95%;padding:10px 14px;border-radius:12px;line-height:1.4;}
+.msg-bot{background:var(--card-bg);color:#fff;align-self:flex-start;border:1.5px solid var(--primary);box-shadow:0 0 10px rgba(0,242,254,0.15);}
+.msg-user{background:var(--primary);color:#000;font-weight:600;align-self:flex-end;}
 
-        .catalog-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+.chat-product-card {background:#1a1a22;border:1px solid var(--primary);border-radius:10px;padding:8px;margin-top:8px;display:flex;gap:8px;align-items:center;}
+.chat-product-card img, .chat-product-card .cp-icon {width:42px;height:42px;object-fit:contain;border-radius:6px;background:#111;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.chat-product-info {flex-grow:1;}
+.chat-product-info h4 {font-size:0.78rem;font-weight:600;color:#fff;}
+.chat-product-info p {font-size:0.72rem;color:var(--primary);font-weight:700;}
+.chat-card-actions {display:flex;gap:4px;}
+.chat-card-actions button {border:none;padding:5px 8px;border-radius:5px;font-weight:bold;cursor:pointer;font-size:0.7rem;}
+.btn-chat-view {background:var(--border-color);color:#fff;}
+.btn-chat-add {background:var(--primary);color:#000;}
 
-        .product-card {
-            background: var(--card-bg);
-            border: 1px solid var(--neon-cyan);
-            border-radius: 16px;
-            padding: 15px;
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .product-info h3 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-            color: var(--text-light);
-        }
-
-        .product-info .price {
-            font-size: 1.2rem;
-            color: var(--neon-cyan);
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        .product-info p {
-            font-size: 0.85rem;
-            color: #c7c7cc;
-            line-height: 1.4;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-view, .btn-add {
-            flex: 1;
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            border: none;
-        }
-
-        .btn-view {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-add {
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-fuchsia));
-            color: #000;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
-        }
-
-        /* BOTÓN FLOTANTE ASESOR IA */
-        .ai-assistant-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-fuchsia));
-            color: #000;
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            z-index: 99;
-            border: none;
-        }
-    </style>
+.chat-footer-box{padding:8px;background:var(--card-bg);display:flex;gap:6px;border-top:1px solid var(--border-color);}
+.chat-input{flex-grow:1;background:var(--bg-dark);border:1px solid var(--border-color);padding:8px 12px;border-radius:16px;color:#fff;outline:none;}
+.chat-send-btn{background:var(--primary);border:none;padding:0 14px;border-radius:16px;cursor:pointer;font-weight:bold;color:#000;}
+</style>
 </head>
 <body>
 
-    <!-- CABECERA -->
-    <header>
-        <div class="logo-area">
-            <div class="logo-container">ZP</div>
-            <h1>ZETTA PERFUM'S</h1>
-        </div>
-        <button class="cart-btn">
-            🛒 Carrito <span style="background:var(--neon-fuchsia); padding: 2px 6px; border-radius: 50%; font-size: 0.75rem;">0</span>
-        </button>
-    </header>
+<div id="splash-screen">
+     <div class="splash-logo-container">
+    <img src="https://i.postimg.cc/02Dj1nhz/Logo.jpg" alt="Logo ZETTA">
+  </div>
+  <div class="splash-text">ZETTA PERFUM'S</div>
+  <div class="splash-sub">Cargando experiencia...</div>
+</div>
 
-    <!-- BANNER PRINCIPAL -->
-    <section class="store-banner">
-        <h2>ZETTA Perfum's</h2>
-        <p>L'Essence de l'Invisible</p>
-    </section>
+<header>
+<div class="brand">
+  <div class="brand-icon"><img src="https://i.postimg.cc/02Dj1nhz/Logo.jpg" alt="Logo ZETTA"></div>
+  <span class="brand-name">ZETTA PERFUM'S</span>
+</div>
+<button class="cart-btn" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i> Carrito <span class="cart-badge" id="cart-count">0</span></button>
+</header>
 
-    <!-- MENÚ DE CATEGORÍAS Y SUBMENÚS DESPLEGABLES -->
-    <div class="categories-container">
-        <!-- BOTÓN TODOS -->
-        <button class="main-category-btn active" onclick="filtrarTodo()">✨ Ver Todos los Perfumes</button>
+<section class="hero-banner">
+<h1 class="hero-title">ZETTA Perfum's</h1>
+<p class="hero-subtitle">L'ESSENCE DE L'INVISIBLE</p>
+</section>
 
-        <!-- CATEGORÍA ÁRABES -->
-        <button class="main-category-btn" onclick="toggleSubmenu('submenu-arabes', this)">
-            🕌 Perfumes Árabes <span>▼</span>
-        </button>
-        <div id="submenu-arabes" class="submenu">
-            <button class="sub-chip" onclick="filtrarCategoriaYGenero('arabes', 'hombre')">👨 Hombre</button>
-            <button class="sub-chip" onclick="filtrarCategoriaYGenero('arabes', 'mujer')">👩 Mujer</button>
-            <button class="sub-chip" onclick="filtrarCategoriaYGenero('arabes', 'unisex')">✨ Unisex</button>
-        </div>
-
-        <!-- CATEGORÍA CLÁSICOS -->
-        <button class="main-category-btn" onclick="toggleSubmenu('submenu-clasicos', this)">
-            🌟 Perfumes Clásicos <span>▼</span>
-        </button>
-        <div id="submenu-clasicos" class="submenu">
-            <button class="sub-chip" onclick="filtrarCategoriaYGenero('clasicos', 'hombre')">👨 Hombre</button>
-            <button class="sub-chip" onclick="filtrarCategoriaYGenero('clasicos', 'mujer')">👩 Mujer</button>
-            <button class="sub-chip" onclick="filtrarCategoriaYGenero('clasicos', 'unisex')">✨ Unisex</button>
-        </div>
-    </div>
-
-    <!-- CATÁLOGO DE PRODUCTOS -->
-    <main class="catalog-container">
-        <!-- Los productos se cargan dinámicamente -->
-    </main>
-
-    <!-- BOTÓN ASESOR IA -->
-    <button class="ai-assistant-btn">
-        ✨ Asesor ZETTA
+<div class="menu-container">
+  <div class="menu-dropdown-wrapper">
+    <button class="menu-toggle-btn" onclick="toggleCategoryMenu()">
+      <span><i class="fa-solid fa-bars" style="color:var(--primary); margin-right:8px;"></i> Categorías</span>
+      <span id="current-cat-label" style="font-weight:normal; color:var(--text-muted); font-size:0.8rem;">(Todos)</span>
     </button>
+    <div class="categories-dropdown" id="categories-dropdown"></div>
+  </div>
+</div>
 
-    <!-- LÓGICA DE JAVASCRIPT -->
-    <script>
-        let categoriaSeleccionada = 'todos';
-        let generoSeleccionado = 'todos';
-        let productosGlobales = []; // Aquí se cargan tus datos de Google Sheets
+<main class="catalog-container" id="product-grid"></main>
 
-        // Función para abrir/cerrar los submenús al hacer clic en Árabes o Clásicos
-        function toggleSubmenu(idSubmenu, elemento) {
-            // Cerrar otros submenús abiertos
-            document.querySelectorAll('.submenu').forEach(sub => {
-                if(sub.id !== idSubmenu) sub.classList.remove('show');
-            });
-            document.querySelectorAll('.main-category-btn').forEach(btn => {
-                if(btn !== elemento) btn.classList.remove('active');
-            });
+<div class="cart-overlay" id="cart-modal">
+<div class="cart-modal">
+<div class="cart-header"><h3>Tu Carrito</h3><button class="close-cart" onclick="toggleCart()">&times;</button></div>
+<div class="cart-items" id="cart-items-container"></div>
+<div class="cart-footer">
+<div class="cart-total"><span>Total:</span><span id="cart-total-price">$0</span></div>
+<form class="checkout-form" onsubmit="sendOrderToWhatsApp(event)">
+<input type="text" id="cust-name" placeholder="Tu Nombre" required>
+<input type="text" id="cust-address" placeholder="Dirección / Ciudad" required>
+<button type="submit" class="send-whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> Pedir por WhatsApp</button>
+</form>
+</div>
+</div>
+</div>
 
-            // Alternar el submenús actual
-            const submenu = document.getElementById(idSubmenu);
-            submenu.classList.toggle('show');
-            elemento.classList.toggle('active');
-        }
+<button class="recommendations-btn" id="toggle-chat-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> <i class="fa-solid fa-bag-shopping"></i> Asesor ZETTA</button>
 
-        // Mostrar todo
-        function filtrarTodo() {
-            categoriaSeleccionada = 'todos';
-            generoSeleccionado = 'todos';
-            document.querySelectorAll('.submenu').forEach(sub => sub.classList.remove('show'));
-            document.querySelectorAll('.main-category-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.sub-chip').forEach(chip => chip.classList.remove('active'));
-            document.querySelector('.main-category-btn').classList.add('active');
-            aplicarFiltros();
-        }
+<div class="chat-window" id="chat-window">
+<div class="chat-header" style="padding:12px;background:var(--card-bg);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-color);">
+  <span style="font-weight:600;color:var(--primary);"><i class="fa-solid fa-wand-magic-sparkles"></i> Asesor IA ZETTA</span>
+  <button class="close-cart" id="close-chat-btn">&times;</button>
+</div>
+<div class="chat-body" id="chat-body">
+  <div class="msg msg-bot">¡Hola! Qué gusto saludarte en ZETTA 🤝✨ Soy tu asesor experto en perfumería. Dime el nombre, marca, notas (dulce, amaderado...) o género (hombre, mujer...) y te mostraré el perfume ideal.</div>
+</div>
+<div class="chat-footer-box">
+<input type="text" class="chat-input" id="chat-input" placeholder="Ej: Busco un perfume amaderado de hombre...">
+<button class="chat-send-btn" id="send-chat-btn"><i class="fa-solid fa-paper-plane"></i></button>
+</div>
+</div>
 
-        // Filtrar por categoría (árabes/clasicos) y género (hombre/mujer/unisex)
-        function filtrarCategoriaYGenero(categoria, genero) {
-            categoriaSeleccionada = categoria;
-            generoSeleccionado = genero;
+<script>
+const STORE_CONFIG = { name: "ZETTA PERFUM'S", whatsappNumber: "573052953417", currencySymbol: "$" };
+const CATALOG_URL = "https://script.google.com/macros/s/AKfycbzqoGiONu3DTfMzvfJQbpBzbXI9iIBwMYSMsPCrnpbnp8UtRH5k2VTxGxCFySUEfS8/exec"; 
 
-            // Marcar visualmente el botón de género presionado
-            document.querySelectorAll('.sub-chip').forEach(chip => chip.classList.remove('active'));
-            event.target.classList.add('active');
+let products = [];
+let categories = []; 
+let currentCategory = "Todos";
+let currentGender = "Todos";
 
-            aplicarFiltros();
-        }
+function initStore() {
+  tryFetchCatalog();
+}
 
-        // Lógica de filtrado sobre el catálogo
-        function aplicarFiltros() {
-            let productosFiltrados = productosGlobales.filter(producto => {
-                let catProd = producto.categoria ? producto.categoria.toLowerCase() : '';
-                let genProd = producto.genero ? producto.genero.toLowerCase() : '';
+async function tryFetchCatalog() {
+  try {
+    const response = await fetch(CATALOG_URL);
+    const data = await response.json();
+    if (data && data.length > 0) {
+      products = data.map((item, index) => ({
+        id: index + 1, 
+        title: item.title || item.titulo || item.nombre || "Perfume Zetta", 
+        category: item.category ? item.category.trim().toLowerCase() : "clasicos",
+        price: Number(item.price || item.precio) || 90000, 
+        desc: item.desc || item.descripcion || "Fragancia exclusiva de alta duración", 
+        gender: (item.gender || item.genero || "unisex").trim().toLowerCase(),
+        icon: "✨", 
+        image: item.image || item.Img || item.imagen || ""
+      }));
+      categories = [...new Set(products.map(p => p.category))];
+      renderCategories(); 
+      renderProducts();
+    }
+  } catch (e) {
+    console.log("Error al cargar la red.");
+  } finally {
+    const splash = document.getElementById("splash-screen");
+    if(splash) splash.classList.add("fade-out");
+  }
+}
 
-                let cumpleCategoria = (categoriaSeleccionada === 'todos' || catProd.includes(categoriaSeleccionada));
-                let cumpleGenero = (generoSeleccionado === 'todos' || genProd.includes(generoSeleccionado));
+function formatMoney(a){return STORE_CONFIG.currencySymbol + Number(a).toLocaleString('es-CO');}
 
-                return cumpleCategoria && cumpleGenero;
-            });
+function toggleCategoryMenu() {
+  document.getElementById("categories-dropdown").classList.toggle("show");
+}
 
-            renderizarCatalogo(productosFiltrados);
-        }
+window.onclick = function(event) {
+  if (!event.target.matches('.menu-toggle-btn') && !event.target.closest('.menu-toggle-btn') && !event.target.closest('.categories-dropdown')) {
+    const dropdown = document.getElementById("categories-dropdown");
+    if (dropdown && dropdown.classList.contains('show')) {
+      dropdown.classList.remove('show');
+    }
+  }
+}
 
-        function renderizarCatalogo(listaProductos) {
-            const contenedor = document.querySelector('.catalog-container');
-            contenedor.innerHTML = '';
+function toggleSubMenu(catKey, event) {
+  event.stopPropagation();
+  const subMenu = document.getElementById(`sub-${catKey}`);
+  // Cerrar otros submenús si se desea, o mantener abierto
+  document.querySelectorAll('.sub-menu').forEach(m => {
+    if(m.id !== `sub-${catKey}`) m.classList.remove('show');
+  });
+  if(subMenu) {
+    subMenu.classList.toggle('show');
+  }
+}
 
-            if (listaProductos.length === 0) {
-                contenedor.innerHTML = `<p style="text-align: center; color: #a1a1a6; grid-column: 1/-1; padding: 40px;">No se encontraron perfumes para esta selección.</p>`;
-                return;
-            }
+function renderCategories(){ 
+  let labelText = "Todos";
+  if(currentCategory !== "Todos") {
+    labelText = currentCategory.toUpperCase();
+    if(currentGender !== "Todos") labelText += ` / ${currentGender.toUpperCase()}`;
+  }
+  document.getElementById("current-cat-label").innerText = `(${labelText})`;
 
-            listaProductos.forEach(prod => {
-                let card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <div class="product-info">
-                        <span style="font-size: 0.75rem; color: var(--neon-fuchsia); text-transform: uppercase; font-weight: bold;">${prod.categoria || 'Perfume'} • ${prod.genero || ''}</span>
-                        <h3>${prod.nombre}</h3>
-                        <div class="price">$${Number(prod.precio).toLocaleString()}</div>
-                        <p>${prod.descripcion}</p>
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn-view">Ver</button>
-                        <button class="btn-add">Agregar</button>
-                    </div>
-                `;
-                contenedor.appendChild(card);
-            });
-        }
-    </script>
+  let html = `<button class="cat-main-btn ${currentCategory === 'Todos' ? 'active' : ''}" onclick="filterSelection('Todos', 'Todos')">✨ TODOS LOS PERFUMES</button>`;
+
+  categories.forEach(cat => {
+    const isCatActive = (currentCategory === cat);
+    html += `
+      <div class="cat-group">
+        <button class="cat-main-btn ${isCatActive ? 'active' : ''}" onclick="toggleSubMenu('${cat}', event)">
+          <span>${cat.toUpperCase()}</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:0.75rem;"></i>
+        </button>
+        <div class="sub-menu" id="sub-${cat}">
+          <button class="sub-item-btn ${isCatActive && currentGender === 'hombre' ? 'active' : ''}" onclick="filterSelection('${cat}', 'hombre')"><i class="fa-solid fa-mars" style="color:var(--primary);"></i> Hombre</button>
+          <button class="sub-item-btn ${isCatActive && currentGender === 'mujer' ? 'active' : ''}" onclick="filterSelection('${cat}', 'mujer')"><i class="fa-solid fa-venus" style="color:var(--secondary);"></i> Mujer</button>
+          <button class="sub-item-btn ${isCatActive && currentGender === 'unisex' ? 'active' : ''}" onclick="filterSelection('${cat}', 'unisex')"><i class="fa-solid fa-genderless"></i> Unisex</button>
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById("categories-dropdown").innerHTML = html;
+}
+
+function filterSelection(cat, gen){ 
+  currentCategory = cat; 
+  currentGender = gen;
+  renderCategories(); 
+  renderProducts(); 
+  document.getElementById("categories-dropdown").classList.remove('show');
+}
+
+function renderProducts(){
+  let f = products;
+  if(currentCategory !== "Todos") {
+    f = f.filter(p => p.category === currentCategory);
+  }
+  if(currentGender !== "Todos") {
+    f = f.filter(p => p.gender.includes(currentGender));
+  }
+
+  document.getElementById("product-grid").innerHTML = f.map(p => `
+    <div class="product-card" id="prod-${p.id}">
+      <div class="product-img-container">${p.image ? `<img src="${p.image.trim()}" alt="${p.title}">` : `<span style="font-size:3.5rem;">${p.icon}</span>`}</div>
+      <div class="product-info">
+        <div class="product-meta-top">
+          <span class="product-category">${p.category}</span>
+          ${p.gender ? `<span class="product-gender">${p.gender}</span>` : ''}
+        </div>
+        <h3 class="product-title">${p.title}</h3>
+        <p class="product-desc">${p.desc}</p>
+        <div class="product-price">${formatMoney(p.price)}</div>
+        <button class="add-to-cart-btn" onclick="addToCart(${p.id})">Agregar</button>
+      </div>
+    </div>`).join('');
+}
+
+function addToCart(id){
+  const ex = cart.find(i => i.id === id);
+  if(ex){ ex.quantity += 1; } else { cart.push({...products.find(p => p.id === id), quantity: 1}); }
+  updateCartUI();
+}
+
+function viewProductInCatalog(id) {
+  document.getElementById("chat-window").classList.remove("active");
+  const prod = products.find(p => p.id === id);
+  if(prod && currentCategory !== "Todos" && currentCategory !== prod.category) {
+    filterSelection(prod.category, 'Todos');
+  }
+  setTimeout(() => {
+    const card = document.getElementById(`prod-${id}`);
+    if(card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.add('highlight');
+      setTimeout(() => card.classList.remove('highlight'), 2500);
+    }
+  }, 200);
+}
+
+function updateCartUI(){
+  document.getElementById("cart-count").innerText = cart.reduce((s, i) => s + i.quantity, 0);
+  document.getElementById("cart-total-price").innerText = formatMoney(cart.reduce((s, i) => s + (i.price * i.quantity), 0));
+  document.getElementById("cart-items-container").innerHTML = cart.map(i => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${i.image ? `<img src="${i.image.trim()}">` : i.icon}</div>
+      <div class="cart-item-details">
+        <div class="cart-item-title">${i.title}</div>
+        <div class="qty-controls"><button class="qty-btn" onclick="changeQty(${i.id},-1)">-</button> <span>${i.quantity}</span> <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button></div>
+      </div>
+      <button class="delete-item" onclick="removeItem(${i.id})"><i class="fa-solid fa-trash"></i></button>
+    </div>`).join('');
+}
+
+function changeQty(id, d){ const it = cart.find(i => i.id === id); if(it){ it.quantity += d; if(it.quantity <= 0) cart = cart.filter(i => i.id !== id); updateCartUI(); } }
+function removeItem(id){ cart = cart.filter(i => i.id !== id); updateCartUI(); }
+function toggleCart(){ document.getElementById("cart-modal").classList.toggle("open"); }
+function sendOrderToWhatsApp(e){
+  e.preventDefault();
+  const t = `*PEDIDO ZETTA*\nCliente: ${document.getElementById("cust-name").value}\n` + cart.map((i,x) => `${x+1}. ${i.title} x${i.quantity}`).join('\n');
+  window.open(`https://wa.me/${STORE_CONFIG.whatsappNumber}?text=` + encodeURIComponent(t), '_blank');
+}
+
+document.getElementById("toggle-chat-btn").onclick = () => document.getElementById("chat-window").classList.toggle("active");
+document.getElementById("close-chat-btn").onclick = () => document.getElementById("chat-window").classList.remove("active");
+
+function processAIChat() {
+  const inputElem = document.getElementById("chat-input");
+  const text = inputElem.value.trim();
+  if(!text) return;
+
+  const chatBody = document.getElementById("chat-body");
+  chatBody.innerHTML += `<div class="msg msg-user">${text}</div>`;
+  inputElem.value = "";
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  const typingId = "typing-" + Date.now();
+  chatBody.innerHTML += `<div class="msg msg-bot" id="${typingId}">Analizando el catálogo de ZETTA... ✨</div>`;
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  setTimeout(() => {
+    const typingElement = document.getElementById(typingId);
+    if(typingElement) typingElement.remove();
+
+    const query = text.toLowerCase().trim();
+    const queryWords = query.split(" ").filter(w => w.length > 2);
+
+    const wantsMan = query.includes("hombre") || query.includes("caballero") || query.includes("masculino");
+    const wantsWoman = query.includes("mujer") || query.includes("dama") || query.includes("femenina");
+    const wantsUnisex = query.includes("unisex");
+
+    let scoredProducts = products.map(prod => {
+      let score = 0;
+      const titleLower = prod.title.toLowerCase();
+      const descLower = prod.desc.toLowerCase();
+      const genderLower = prod.gender.toLowerCase();
+
+      queryWords.forEach(w => {
+        if (titleLower.includes(w)) score += 25;
+        if (descLower.includes(w)) score += 10;
+      });
+
+      if (wantsMan) {
+        if (genderLower.includes("hombre") || genderLower.includes("masculino")) score += 15;
+        else if (genderLower.includes("mujer")) score -= 30;
+      }
+      if (wantsWoman) {
+        if (genderLower.includes("mujer") || genderLower.includes("femenina")) score += 15;
+        else if (genderLower.includes("hombre")) score -= 30;
+      }
+      if (wantsUnisex && genderLower.includes("unisex")) {
+        score += 15;
+      }
+
+      if (query.includes("amaderado") && (descLower.includes("amaderado") || descLower.includes("madera"))) score += 15;
+      if (query.includes("dulce") && (descLower.includes("dulce") || descLower.includes("fresa") || descLower.includes("frutal"))) score += 15;
+      if (query.includes("fresco") && (descLower.includes("fresc") || descLower.includes("acuático") || descLower.includes("limp"))) score += 15;
+      if (query.includes("floral") && descLower.includes("floral")) score += 15;
+      if (query.includes("oriental") && descLower.includes("oriental")) score += 15;
+      if (query.includes("ámbar") && descLower.includes("ámbar")) score += 15;
+
+      return { product: prod, score: score };
+    });
+
+    scoredProducts.sort((a, b) => b.score - a.score);
+
+    let bestMatches = scoredProducts.filter(item => item.score > 5).map(item => item.product);
+    if (bestMatches.length === 0) {
+      bestMatches = scoredProducts.filter(item => item.score > 0).map(item => item.product);
+    }
+    if (bestMatches.length === 0) {
+      bestMatches = products.slice(0, 3);
+    }
+    bestMatches = bestMatches.slice(0, 3);
+
+    let botReply = `¡Excelente elección! Analizando las notas y géneros, aquí tienes la opción ideal para "${text}":`;
+    if (bestMatches.length > 1) {
+      botReply = `¡Perfecto! Basado en tu búsqueda de "${text}", estas son las mejores recomendaciones de ZETTA:`;
+    }
+    
+    let cardsHtml = "";
+    bestMatches.forEach(prod => {
+      let thumb = prod.image ? `<img src="${prod.image.trim()}" alt="${prod.title}">` : `<div class="cp-icon">${prod.icon}</div>`;
+      cardsHtml += `
+        <div class="chat-product-card">
+          ${thumb}
+          <div class="chat-product-info">
+            <h4>${prod.title} <span style="font-size:0.65rem; background:linear-gradient(270deg,var(--primary),var(--secondary)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:bold;">(${prod.gender})</span></h4>
+            <p>${formatMoney(prod.price)}</p>
+            <span style="font-size:0.68rem; color:var(--text-muted); display:block; margin-top:2px;">${prod.desc}</span>
+          </div>
+          <div class="chat-card-actions">
+            <button class="btn-chat-view" onclick="viewProductInCatalog(${prod.id})">Ver</button>
+            <button class="btn-chat-add" onclick="addToCart(${prod.id})">Agregar</button>
+          </div>
+        </div>`;
+    });
+
+    chatBody.innerHTML += `<div class="msg msg-bot">${botReply}${cardsHtml}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, 400);
+}
+
+document.getElementById("send-chat-btn").onclick = processAIChat;
+document.getElementById("chat-input").onkeypress = (e) => { if(e.key === "Enter") processAIChat(); };
+
+initStore();
+
+setInterval(() => {
+  document.querySelectorAll('iframe, a, div').forEach(el => {
+    if ((el.src && el.src.includes('netlify')) || (el.innerText && el.innerText.includes('Powered by Netlify'))) {
+      el.remove();
+    }
+  });
+}, 300);
+</script>
 </body>
 </html>
