@@ -182,7 +182,7 @@ header{position:sticky;top:0;background:rgba(10,10,12,0.95);backdrop-filter:blur
 <body>
 
 <div id="splash-screen">
-     <div class="splash-logo-container">
+    <div class="splash-logo-container">
     <img src="https://i.postimg.cc/02Dj1nhz/Logo.jpg" alt="Logo ZETTA">
   </div>
   <div class="splash-text">ZETTA PERFUM'S</div>
@@ -303,7 +303,6 @@ window.onclick = function(event) {
 function toggleSubMenu(catKey, event) {
   event.stopPropagation();
   const subMenu = document.getElementById(`sub-${catKey}`);
-  // Cerrar otros submenús si se desea, o mantener abierto
   document.querySelectorAll('.sub-menu').forEach(m => {
     if(m.id !== `sub-${catKey}`) m.classList.remove('show');
   });
@@ -434,7 +433,7 @@ function processAIChat() {
   chatBody.scrollTop = chatBody.scrollHeight;
 
   const typingId = "typing-" + Date.now();
-  chatBody.innerHTML += `<div class="msg msg-bot" id="${typingId}">Analizando el catálogo de ZETTA... ✨</div>`;
+  chatBody.innerHTML += `<div class="msg msg-bot" id="${typingId}">Analizando catálogo... ✨</div>`;
   chatBody.scrollTop = chatBody.scrollHeight;
 
   setTimeout(() => {
@@ -442,60 +441,79 @@ function processAIChat() {
     if(typingElement) typingElement.remove();
 
     const query = text.toLowerCase().trim();
+    
+    // 1. MANEJO DE SALUDOS Y CORTESÍA (Responde como humano)
+    const saludos = ["hola", "ola", "buenas", "buenos dias", "buenas tardes", "buenas noches", "saludos", "hey"];
+    const agradecimientos = ["gracias", "muchas gracias", "ok", "vale", "perfecto", "listo", "super"];
+    
+    if (saludos.some(s => query === s || query === s + "!" || query === s + " zetta" || query.includes("hola"))) {
+      chatBody.innerHTML += `<div class="msg msg-bot">¡Hola! Qué gusto saludarte 👋. Soy tu asesor experto de ZETTA. ¿En qué te puedo ayudar hoy? ¿Buscas un perfume para hombre, mujer o tienes algún aroma en mente?</div>`;
+      chatBody.scrollTop = chatBody.scrollHeight;
+      return;
+    }
+
+    if (agradecimientos.some(a => query === a || query.includes("gracias"))) {
+      chatBody.innerHTML += `<div class="msg msg-bot">¡Con mucho gusto! Estoy aquí por si necesitas más recomendaciones. ✨</div>`;
+      chatBody.scrollTop = chatBody.scrollHeight;
+      return;
+    }
+
+    // 2. LÓGICA DE BÚSQUEDA ESTRICTA EN EL SHEETS
     const queryWords = query.split(" ").filter(w => w.length > 2);
 
-    const wantsMan = query.includes("hombre") || query.includes("caballero") || query.includes("masculino");
-    const wantsWoman = query.includes("mujer") || query.includes("dama") || query.includes("femenina");
+    const wantsMan = query.includes("hombre") || query.includes("caballero") || query.includes("masculino") || query.includes("niño");
+    const wantsWoman = query.includes("mujer") || query.includes("dama") || query.includes("femenina") || query.includes("niña");
     const wantsUnisex = query.includes("unisex");
 
     let scoredProducts = products.map(prod => {
       let score = 0;
-      const titleLower = prod.title.toLowerCase();
-      const descLower = prod.desc.toLowerCase();
-      const genderLower = prod.gender.toLowerCase();
+      const titleLower = (prod.title || "").toLowerCase();
+      const descLower = (prod.desc || "").toLowerCase();
+      const genderLower = (prod.gender || "").toLowerCase();
+      const categoryLower = (prod.category || "").toLowerCase();
 
       queryWords.forEach(w => {
-        if (titleLower.includes(w)) score += 25;
+        if (titleLower.includes(w)) score += 30;
         if (descLower.includes(w)) score += 10;
+        if (categoryLower.includes(w)) score += 15;
       });
 
       if (wantsMan) {
-        if (genderLower.includes("hombre") || genderLower.includes("masculino")) score += 15;
-        else if (genderLower.includes("mujer")) score -= 30;
+        if (genderLower.includes("hombre") || genderLower.includes("masculino")) score += 20;
+        else if (genderLower.includes("mujer")) score -= 100;
       }
       if (wantsWoman) {
-        if (genderLower.includes("mujer") || genderLower.includes("femenina")) score += 15;
-        else if (genderLower.includes("hombre")) score -= 30;
+        if (genderLower.includes("mujer") || genderLower.includes("femenina")) score += 20;
+        else if (genderLower.includes("hombre")) score -= 100;
       }
       if (wantsUnisex && genderLower.includes("unisex")) {
-        score += 15;
+        score += 20;
       }
 
-      if (query.includes("amaderado") && (descLower.includes("amaderado") || descLower.includes("madera"))) score += 15;
-      if (query.includes("dulce") && (descLower.includes("dulce") || descLower.includes("fresa") || descLower.includes("frutal"))) score += 15;
-      if (query.includes("fresco") && (descLower.includes("fresc") || descLower.includes("acuático") || descLower.includes("limp"))) score += 15;
-      if (query.includes("floral") && descLower.includes("floral")) score += 15;
-      if (query.includes("oriental") && descLower.includes("oriental")) score += 15;
-      if (query.includes("ámbar") && descLower.includes("ámbar")) score += 15;
+      if ((query.includes("amaderado") || query.includes("madera")) && (descLower.includes("amaderado") || descLower.includes("madera"))) score += 15;
+      if ((query.includes("dulce") || query.includes("frutal")) && (descLower.includes("dulce") || descLower.includes("fresa") || descLower.includes("frutal") || descLower.includes("vainilla"))) score += 15;
+      if ((query.includes("fresco") || query.includes("limpio") || query.includes("citrico")) && (descLower.includes("fresc") || descLower.includes("acuático") || descLower.includes("limp") || descLower.includes("cítrico"))) score += 15;
+      if (query.includes("floral") && (descLower.includes("floral") || descLower.includes("flores") || descLower.includes("rosa"))) score += 15;
 
       return { product: prod, score: score };
     });
 
-    scoredProducts.sort((a, b) => b.score - a.score);
+    let validMatches = scoredProducts.filter(item => item.score > 0);
+    validMatches.sort((a, b) => b.score - a.score);
 
-    let bestMatches = scoredProducts.filter(item => item.score > 5).map(item => item.product);
-    if (bestMatches.length === 0) {
-      bestMatches = scoredProducts.filter(item => item.score > 0).map(item => item.product);
-    }
-    if (bestMatches.length === 0) {
-      bestMatches = products.slice(0, 3);
-    }
-    bestMatches = bestMatches.slice(0, 3);
+    let bestMatches = validMatches.slice(0, 3).map(item => item.product);
 
-    let botReply = `¡Excelente elección! Analizando las notas y géneros, aquí tienes la opción ideal para "${text}":`;
-    if (bestMatches.length > 1) {
-      botReply = `¡Perfecto! Basado en tu búsqueda de "${text}", estas son las mejores recomendaciones de ZETTA:`;
+    // 3. RESPUESTA SI NO HAY COINCIDENCIAS REALES
+    if (bestMatches.length === 0) {
+      chatBody.innerHTML += `<div class="msg msg-bot">Aún no encuentro un perfume exacto para "${text}" en nuestra base de datos. 🤔<br><br>¿Podrías darme un poco más de detalle? Por ejemplo, dime si es para hombre o mujer, o si buscas un aroma dulce, amaderado, fresco...</div>`;
+      chatBody.scrollTop = chatBody.scrollHeight;
+      return;
     }
+
+    // 4. RESPUESTA EXITOSA
+    let botReply = bestMatches.length === 1 
+      ? `¡Excelente! Analizando nuestro catálogo, esta es la opción ideal para lo que buscas:`
+      : `¡Perfecto! Basado en tus gustos, estas son las mejores recomendaciones de ZETTA:`;
     
     let cardsHtml = "";
     bestMatches.forEach(prod => {
@@ -517,7 +535,7 @@ function processAIChat() {
 
     chatBody.innerHTML += `<div class="msg msg-bot">${botReply}${cardsHtml}</div>`;
     chatBody.scrollTop = chatBody.scrollHeight;
-  }, 400);
+  }, 500);
 }
 
 document.getElementById("send-chat-btn").onclick = processAIChat;
